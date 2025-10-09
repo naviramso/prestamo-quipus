@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login Administrativo - Sistema Quipus</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen font-sans">
+    <div class="absolute inset-0 bg-[url('logo.png')] bg-repeat opacity-30 z-0 bg-size-[10%]"
+        style="background-size: 150px;"></div>
+    <div class="relative z-10">
+        <nav class="bg-red-600 text-white shadow">
+            <div class="max-w-7xl mx-auto px-4 py-3">
+                <!-- Contenedor principal -->
+                <div class="flex justify-between items-center">
+                    <!-- Logo y título -->
+                    <a href="/">
+                        <div class="flex items-center gap-2">
+                            <img src="logo.png" alt="logo" width="400" height="400" class="w-20 h-20 rounded">
+                            <h1 class="text-xl font-bold">Sistema de Préstamos Quipus</h1>
+                        </div>
+                    </a>
+
+                    <div class="hidden md:flex space-x-4">
+                        <a href="/" class="hover:underline">Inicio</a>
+                        <a href="/devolucion" class="hover:underline">Devolución</a>
+                        <a href="/reportes" class="hover:underline">Reportes</a>
+                    </div>
+
+                    <button class="md:hidden focus:outline-none" id="menu-button">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16"></path>
+                        </svg>
+                    </button>
+                </div>
+
+                <div class="md:hidden hidden flex-col space-y-2 mt-2 pb-2" id="mobile-menu">
+                    <a href="/" class="block px-3 py-2 hover:bg-red-700 rounded">Inicio</a>
+                    <a href="/devolucion" class="block px-3 py-2 hover:bg-red-700 rounded">Devolución</a>
+                    <a href="/reportes" class="block px-3 py-2 hover:bg-red-700 rounded">Reportes</a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Contenido Principal -->
+        <div class="max-w-md mx-auto mt-10 p-6 bg-white shadow rounded-xl">
+            <h2 class="text-2xl font-semibold text-center mb-6 text-gray-700">Acceso Administrativo</h2>
+            
+            <!-- Formulario de Login -->
+            <form id="loginForm" class="space-y-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        required
+                        placeholder="Ingresa tu usuario"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    >
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Contraseña</label>
+                    <input 
+                        type="password" 
+                        id="contrasenia" 
+                        required
+                        placeholder="Ingresa tu contraseña"
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                    >
+                </div>
+
+                <button 
+                    type="submit"
+                    class="w-full bg-red-600 hover:bg-red-700 text-white font-medium py-2 px-4 rounded-md transition duration-200 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2"
+                >
+                    Iniciar Sesión
+                </button>
+            </form>
+
+            <!-- Mensaje de error -->
+            <div id="mensajeError" class="mt-4 p-3 bg-red-100 border border-red-400 rounded-lg text-red-700 text-sm hidden"></div>
+
+        </div>
+    </div>
+
+    <script>
+        // Función para manejar el login
+        async function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const contrasenia = document.getElementById('contrasenia').value;
+            const mensajeError = document.getElementById('mensajeError');
+
+            // Limpiar mensajes anteriores
+            mensajeError.classList.add('hidden');
+
+            try {
+                const response = await fetch('/admin/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, contrasenia })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Guardar sesión en localStorage
+                    localStorage.setItem('adminSession', JSON.stringify({
+                        id: data.id,
+                        nombre: data.nombre,
+                        username: data.username,
+                        rol: data.rol,
+                        loggedIn: true,
+                        timestamp: new Date().getTime()
+                    }));
+
+                    // Redirigir a la página de administración
+                    window.location.href = '/prestamos';
+                } else {
+                    // Mostrar error
+                    mensajeError.textContent = data.error || 'Error al iniciar sesión';
+                    mensajeError.classList.remove('hidden');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                mensajeError.textContent = 'Error de conexión. Intenta nuevamente.';
+                mensajeError.classList.remove('hidden');
+            }
+        }
+
+        // Verificar si ya está logueado
+        function checkExistingSession() {
+            const session = localStorage.getItem('adminSession');
+            if (session) {
+                const sessionData = JSON.parse(session);
+                // Verificar si la sesión es reciente (menos de 24 horas)
+                const now = new Date().getTime();
+                const sessionTime = sessionData.timestamp;
+                const hoursDiff = (now - sessionTime) / (1000 * 60 * 60);
+                
+                if (hoursDiff < 24) {
+                    // Redirigir automáticamente si la sesión es válida
+                    window.location.href = '/prestamos';
+                } else {
+                    // Sesión expirada, limpiar
+                    localStorage.removeItem('adminSession');
+                }
+            }
+        }
+
+        // Event listeners
+        document.getElementById('loginForm').addEventListener('submit', handleLogin);
+
+        // Menú móvil
+        document.getElementById('menu-button').addEventListener('click', function () {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        });
+
+        // Verificar sesión al cargar la página
+        window.onload = checkExistingSession;
+
+        // Función para cerrar sesión (para usar en otras páginas)
+        function logout() {
+            localStorage.removeItem('adminSession');
+            window.location.href = '/admin/login';
+        }
+    </script>
+</body>
+
+</html>

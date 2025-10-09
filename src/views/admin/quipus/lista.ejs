@@ -1,0 +1,491 @@
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm border p-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Gestión de Quipus</h1>
+                <p class="text-gray-600">Administra todos los equipos del sistema</p>
+            </div>
+            <a href="/admin/quipus"
+                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-medium transition-colors flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                </svg>
+                Nuevo Quipus
+            </a>
+        </div>
+    </div>
+
+    <!-- Filtros y Estadísticas -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white rounded-lg shadow-sm border p-4">
+            <div class="flex items-center">
+                <div class="p-2 bg-blue-100 rounded-lg">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-600">Total</p>
+                    <p class="text-xl font-semibold text-gray-900" id="totalQuipus">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border p-4">
+            <div class="flex items-center">
+                <div class="p-2 bg-green-100 rounded-lg">
+                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-600">Disponibles</p>
+                    <p class="text-xl font-semibold text-gray-900" id="disponibles">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border p-4">
+            <div class="flex items-center">
+                <div class="p-2 bg-yellow-100 rounded-lg">
+                    <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-600">Prestados</p>
+                    <p class="text-xl font-semibold text-gray-900" id="prestados">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border p-4">
+            <div class="flex items-center">
+                <div class="p-2 bg-red-100 rounded-lg">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-600">Mantenimiento</p>
+                    <p class="text-xl font-semibold text-gray-900" id="mantenimiento">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros -->
+    <div class="bg-white rounded-lg shadow-sm border p-6">
+        <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+            <div class="flex flex-col md:flex-row md:items-center gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Filtrar por estado</label>
+                    <select id="filtroEstado"
+                        class="w-full md:w-48 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                        <option value="todos">Todos los estados</option>
+                        <option value="disponible">Disponible</option>
+                        <option value="prestado">Prestado</option>
+                        <option value="mantenimiento">Mantenimiento</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
+                </div>
+
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Buscar por código</label>
+                    <input type="text" id="buscarCodigo" placeholder="Ej: 41234"
+                        class="w-full md:w-64 px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                </div>
+            </div>
+
+            <div class="flex items-center gap-4">
+                <button onclick="cargarQuipus()"
+                    class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Actualizar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Quipus -->
+    <div class="bg-white rounded-lg shadow-sm border">
+        <div class="p-6 border-b">
+            <h2 class="text-lg font-semibold text-gray-800">Lista de Quipus</h2>
+            <p class="text-gray-600 text-sm" id="contadorResultados">Mostrando 0 quipus</p>
+        </div>
+
+        <div class="p-6">
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Código</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Estado</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Fecha Registro</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-quipus">
+                        <tr>
+                            <td colspan="4" class="px-4 py-8 text-center text-gray-500">
+                                <div class="flex justify-center">
+                                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+                                </div>
+                                <p class="mt-2">Cargando quipus...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="mt-6 flex items-center justify-between">
+                <p class="text-sm text-gray-700" id="infoPaginacion">
+                    Mostrando 0 de 0 quipus
+                </p>
+                <div class="flex space-x-2" id="paginacion">
+                    <!-- Los botones de paginación se generarán aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal para cambiar estado -->
+<div id="modalEstado" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden z-50">
+    <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+        <div class="mt-3">
+            <h3 class="text-lg font-medium text-gray-800 mb-4">Cambiar Estado del Quipus</h3>
+
+            <div class="mb-4">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Quipus</label>
+                <p class="text-gray-900 font-semibold" id="modalCodigo">-</p>
+            </div>
+
+            <div class="mb-6">
+                <label class="block text-sm font-medium text-gray-700 mb-2">Nuevo Estado</label>
+                <select id="nuevoEstado"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                    <option value="disponible">Disponible</option>
+                    <option value="prestado">Prestado</option>
+                    <option value="mantenimiento">En Mantenimiento</option>
+                    <option value="inactivo">Inactivo</option>
+                </select>
+            </div>
+
+            <div class="flex justify-end space-x-3">
+                <button onclick="cerrarModalEstado()"
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                    Cancelar
+                </button>
+                <button onclick="confirmarCambioEstado()"
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                    Cambiar Estado
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let todosLosQuipus = [];
+    let quipusFiltrados = [];
+    let quipusActual = null;
+    let paginaActual = 1;
+    const quipusPorPagina = 10;
+
+    // Cargar quipus al iniciar
+    document.addEventListener('DOMContentLoaded', function () {
+        cargarQuipus();
+
+        // Event listeners para filtros
+        document.getElementById('filtroEstado').addEventListener('change', filtrarQuipus);
+        document.getElementById('buscarCodigo').addEventListener('input', filtrarQuipus);
+    });
+
+    async function cargarQuipus() {
+        try {
+            mostrarLoading();
+
+            const response = await fetch('/api/quipus');
+            console.log(response);
+            todosLosQuipus = await response.json();
+
+            if (response.ok) {
+                actualizarEstadisticas(todosLosQuipus);
+                filtrarQuipus();
+            } else {
+                mostrarError('Error al cargar los quipus');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarError('Error de conexión');
+        }
+    }
+
+    function actualizarEstadisticas(quipus) {
+        const total = quipus.length;
+        const disponibles = quipus.filter(q => q.estado === 'disponible').length;
+        const prestados = quipus.filter(q => q.estado === 'prestado').length;
+        const mantenimiento = quipus.filter(q => q.estado === 'mantenimiento').length;
+
+        document.getElementById('totalQuipus').textContent = total;
+        document.getElementById('disponibles').textContent = disponibles;
+        document.getElementById('prestados').textContent = prestados;
+        document.getElementById('mantenimiento').textContent = mantenimiento;
+    }
+
+    function filtrarQuipus() {
+        const filtroEstado = document.getElementById('filtroEstado').value;
+        const buscarCodigo = document.getElementById('buscarCodigo').value.toLowerCase();
+
+        quipusFiltrados = todosLosQuipus.filter(quipu => {
+            const coincideEstado = filtroEstado === 'todos' || quipu.estado === filtroEstado;
+            const coincideCodigo = quipu.codigo.toLowerCase().includes(buscarCodigo);
+            return coincideEstado && coincideCodigo;
+        });
+
+        paginaActual = 1;
+        renderizarQuipus();
+    }
+
+    function renderizarQuipus() {
+        const tbody = document.getElementById('tabla-quipus');
+        const inicio = (paginaActual - 1) * quipusPorPagina;
+        const fin = inicio + quipusPorPagina;
+        const quipusPagina = quipusFiltrados.slice(inicio, fin);
+
+        if (quipusFiltrados.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="4" class="px-4 py-8 text-center text-gray-500">
+                        No se encontraron quipus que coincidan con los filtros.
+                    </td>
+                </tr>
+            `;
+        } else {
+            tbody.innerHTML = quipusPagina.map(quipu => `
+                <tr class="border-b hover:bg-gray-50" data-codigo="${quipu.codigo}">
+                    <td class="px-4 py-3">
+                        <div class="flex items-center">
+                            <span class="text-sm font-medium text-gray-900">${quipu.codigo}</span>
+                        </div>
+                    </td>
+                    <td class="px-4 py-3">
+                        ${obtenerBadgeEstado(quipu.estado)}
+                    </td>
+                    <td class="px-4 py-3 text-sm text-gray-600">
+                        ${new Date(quipu.fecha_registro).toLocaleDateString()}
+                    </td>
+                    <td class="px-4 py-3">
+                        <div class="flex space-x-2">
+                            <button 
+                                onclick="abrirModalEstado('${quipu.codigo}', '${quipu.estado}')"
+                                class="text-blue-600 hover:text-blue-800 text-sm font-medium"
+                            >
+                                Cambiar Estado
+                            </button>
+                            <button 
+                                onclick="eliminarQuipus('${quipu.codigo}')"
+                                class="text-red-600 hover:text-red-800 text-sm font-medium"
+                            >
+                                Eliminar
+                            </button>
+                        </div>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        actualizarPaginacion();
+        actualizarContadores();
+    }
+
+    function obtenerBadgeEstado(estado) {
+        const colores = {
+            'disponible': 'bg-green-100 text-green-800',
+            'prestado': 'bg-yellow-100 text-yellow-800',
+            'mantenimiento': 'bg-blue-100 text-blue-800',
+            'inactivo': 'bg-red-100 text-red-800'
+        };
+
+        const textos = {
+            'disponible': 'Disponible',
+            'prestado': 'Prestado',
+            'mantenimiento': 'Mantenimiento',
+            'inactivo': 'Inactivo'
+        };
+
+        return `<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${colores[estado]}">${textos[estado]}</span>`;
+    }
+
+    function actualizarPaginacion() {
+        const totalPaginas = Math.ceil(quipusFiltrados.length / quipusPorPagina);
+        const contenedor = document.getElementById('paginacion');
+
+        if (totalPaginas <= 1) {
+            contenedor.innerHTML = '';
+            return;
+        }
+
+        let html = '';
+
+        // Botón anterior
+        if (paginaActual > 1) {
+            html += `<button onclick="cambiarPagina(${paginaActual - 1})" class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">Anterior</button>`;
+        }
+
+        // Números de página
+        for (let i = 1; i <= totalPaginas; i++) {
+            if (i === paginaActual) {
+                html += `<span class="px-3 py-1 bg-red-600 text-white rounded-md text-sm">${i}</span>`;
+            } else {
+                html += `<button onclick="cambiarPagina(${i})" class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">${i}</button>`;
+            }
+        }
+
+        // Botón siguiente
+        if (paginaActual < totalPaginas) {
+            html += `<button onclick="cambiarPagina(${paginaActual + 1})" class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">Siguiente</button>`;
+        }
+
+        contenedor.innerHTML = html;
+    }
+
+    function actualizarContadores() {
+        const inicio = (paginaActual - 1) * quipusPorPagina + 1;
+        const fin = Math.min(paginaActual * quipusPorPagina, quipusFiltrados.length);
+        const total = quipusFiltrados.length;
+
+        document.getElementById('contadorResultados').textContent = `Mostrando ${total} quipus`;
+        document.getElementById('infoPaginacion').textContent = `Mostrando ${inicio}-${fin} de ${total} quipus`;
+    }
+
+    function cambiarPagina(pagina) {
+        paginaActual = pagina;
+        renderizarQuipus();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function abrirModalEstado(codigo, estadoActual) {
+        quipusActual = codigo;
+        document.getElementById('modalCodigo').textContent = codigo;
+        document.getElementById('nuevoEstado').value = estadoActual;
+        document.getElementById('modalEstado').classList.remove('hidden');
+    }
+
+    function cerrarModalEstado() {
+        document.getElementById('modalEstado').classList.add('hidden');
+        quipusActual = null;
+    }
+
+    async function confirmarCambioEstado() {
+        if (!quipusActual) return;
+
+        const nuevoEstado = document.getElementById('nuevoEstado').value;
+
+        try {
+            const response = await fetch(`/api/quipus/${quipusActual}/estado`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ estado: nuevoEstado })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                mostrarMensaje('success', data.mensaje);
+                cerrarModalEstado();
+                cargarQuipus(); // Recargar la lista
+            } else {
+                mostrarMensaje('error', data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarMensaje('error', 'Error de conexión');
+        }
+    }
+
+    async function eliminarQuipus(codigo) {
+        if (!confirm(`¿Estás seguro de eliminar el quipus "${codigo}"?\nEsta acción no se puede deshacer.`)) {
+            return;
+        }
+
+        try {
+            const response = await fetch(`/api/quipus/${codigo}`, {
+                method: 'DELETE'
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                mostrarMensaje('success', data.mensaje);
+                cargarQuipus(); // Recargar la lista
+            } else {
+                mostrarMensaje('error', data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarMensaje('error', 'Error de conexión');
+        }
+    }
+
+    function mostrarMensaje(tipo, texto) {
+        // Crear notificación temporal
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 ${tipo === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+        notification.textContent = texto;
+
+        document.body.appendChild(notification);
+
+        // Auto-remover después de 5 segundos
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
+
+    function mostrarLoading() {
+        const tbody = document.getElementById('tabla-quipus');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="px-4 py-8 text-center text-gray-500">
+                    <div class="flex justify-center">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+                    </div>
+                    <p class="mt-2">Cargando quipus...</p>
+                </td>
+            </tr>
+        `;
+    }
+
+    function mostrarError(mensaje) {
+        const tbody = document.getElementById('tabla-quipus');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="4" class="px-4 py-8 text-center text-red-500">
+                    <svg class="w-12 h-12 mx-auto text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                    </svg>
+                    <p class="mt-2 font-medium">${mensaje}</p>
+                    <button 
+                        onclick="cargarQuipus()"
+                        class="mt-2 bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded text-sm"
+                    >
+                        Reintentar
+                    </button>
+                </td>
+            </tr>
+        `;
+    }
+</script>

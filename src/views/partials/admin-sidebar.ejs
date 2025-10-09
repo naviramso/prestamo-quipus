@@ -1,0 +1,263 @@
+<!-- Sidebar Administrativo -->
+<div class="flex h-screen bg-gray-100">
+    <!-- Sidebar -->
+    <div class="w-full sm:w-64 bg-red-700 text-white shadow-lg" id="sidebar">
+        <!-- Header del Sidebar -->
+        <div class="p-4 border-b border-red-600 flex justify-between">
+            <div class="flex items-center gap-3">
+                <img src="/logo.png" alt="Logo" class="w-10 h-10 rounded">
+                <div>
+                    <h2 class="font-bold text-lg">Panel Admin</h2>
+                    <p class="text-red-200 text-sm" id="adminRole">
+                        <%= admin.rol %>
+                    </p>
+                </div>
+            </div>
+            <button id="mobile-sidebar-toggle" class="text-white sm:hidden">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- Menú de Navegación -->
+        <nav class="p-4 space-y-2">
+            <!-- Dashboard -->
+            <a href="/admin/dashboard"
+                class="flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+                </svg>
+                <span>Dashboard</span>
+            </a>
+
+            <!-- Gestión de Quipus -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu('quipus-menu')"
+                    class="w-full flex items-center justify-between p-3 hover:bg-red-600 rounded-lg transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                        <span>Gestión de Quipus</span>
+                    </div>
+                    <svg id="quipus-arrow" class="w-4 h-4 transform transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="quipus-menu" class="hidden ml-8 space-y-1 mt-1">
+                    <a href="/admin/quipus" class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                        Registrar Quipus
+                    </a>
+                    <a href="/admin/quipus/lista"
+                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                        Lista de Quipus
+                    </a>
+                </div>
+            </div>
+
+            <!-- Gestión de Estudiantes -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu('estudiantes-menu')"
+                    class="w-full flex items-center justify-between p-3 hover:bg-red-600 rounded-lg transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+                        </svg>
+                        <span>Gestión Estudiantes</span>
+                    </div>
+                    <svg id="estudiantes-arrow" class="w-4 h-4 transform transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="estudiantes-menu" class="hidden ml-8 space-y-1 mt-1">
+                    <a href="/admin/estudiantes"
+                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                        Registrar Estudiante
+                    </a>
+                    <a href="/admin/estudiantes/lista"
+                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                        Lista de Estudiantes
+                    </a>
+                </div>
+            </div>
+
+            <!-- Préstamos y Devoluciones -->
+            <a href="/admin/prestamos"
+                class="flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                </svg>
+                <span>Préstamos</span>
+            </a>
+
+            <a href="/admin/devoluciones"
+                class="flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                <span>Devoluciones</span>
+            </a>
+
+            <!-- Reportes -->
+            <a href="/admin/reportes" class="flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>
+                <span>Reportes</span>
+            </a>
+
+            <!-- Administradores -->
+            <div class="menu-group">
+                <button onclick="toggleSubmenu('admin-menu')"
+                    class="w-full flex items-center justify-between p-3 hover:bg-red-600 rounded-lg transition-colors">
+                    <div class="flex items-center gap-3">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                        </svg>
+                        <span>Administradores</span>
+                    </div>
+                    <svg id="admin-arrow" class="w-4 h-4 transform transition-transform" fill="none"
+                        stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                    </svg>
+                </button>
+                <div id="admin-menu" class="hidden ml-8 space-y-1 mt-1">
+                    <a href="/admin/administradores/registrar"
+                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                        Registrar Admin
+                    </a>
+                    <a href="/admin/administradores/lista"
+                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                        Lista de Admins
+                    </a>
+                </div>
+            </div>
+        </nav>
+
+        <!-- Footer del Sidebar -->
+        <div class="absolute bottom-0 w-64 p-4 border-t border-red-600">
+            <div class="flex items-center gap-3 mb-3">
+                <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
+                    <span class="text-sm font-semibold" id="adminInitials">
+                        <%= admin.nombre.charAt(0).toUpperCase() %>
+                    </span>
+                </div>
+                <div>
+                    <p class="text-sm font-medium" id="adminName">
+                        <%= admin.nombre %>
+                    </p>
+                    <p class="text-xs text-red-200" id="adminUsername">
+                        <%= admin.username %>
+                    </p>
+                </div>
+            </div>
+            <button onclick="logout()"
+                class="w-full flex items-center gap-2 p-2 bg-red-800 hover:bg-red-900 rounded text-sm transition-colors">
+                <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                </svg>
+                Cerrar Sesión
+            </button>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <div class="flex-1 overflow-auto">
+        <!-- Header del contenido -->
+        <header class="bg-white shadow-sm border-b">
+            <div class="px-6 py-4">
+                <div class="flex justify-between items-center">
+                    <button id="mobile-sidebar-toggle-2" class="text-gray-600">
+                        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-800" id="pageTitle">
+                            <%= title %>
+                        </h1>
+                    </div>
+                    <div class="flex items-center gap-4">
+                        <!-- Botón para mostrar/ocultar sidebar en móvil -->
+
+                    </div>
+                </div>
+            </div>
+        </header>
+
+        <!-- Área de contenido dinámico -->
+        <main class="p-6">
+            <%- body %>
+        </main>
+    </div>
+</div>
+
+<script>
+    // Función para toggle submenús
+    function toggleSubmenu(menuId) {
+        const menu = document.getElementById(menuId);
+        const arrow = document.getElementById(menuId.replace('-menu', '-arrow'));
+
+        menu.classList.toggle('hidden');
+        arrow.classList.toggle('rotate-180');
+    }
+
+    // Función para logout
+    async function logout() {
+        try {
+            const response = await fetch('/admin/logout', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            });
+
+            const data = await response.json();
+            if (data.success) {
+                window.location.href = '/';
+            }
+        } catch (error) {
+            console.error('Error al cerrar sesión:', error);
+            window.location.href = '/';
+        }
+    }
+
+    // Mobile sidebar toggle
+    document.getElementById('mobile-sidebar-toggle')?.addEventListener('click', function () {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('hidden');
+        sidebar.classList.toggle('absolute');
+        sidebar.classList.toggle('z-50');
+    });
+
+    // Mobile sidebar toggle
+    document.getElementById('mobile-sidebar-toggle-2')?.addEventListener('click', function () {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.toggle('hidden');
+        sidebar.classList.toggle('absolute');
+        sidebar.classList.toggle('z-50');
+    });
+
+
+    // Marcar página activa
+    document.addEventListener('DOMContentLoaded', function () {
+        const currentPath = window.location.pathname;
+        document.querySelectorAll('nav a').forEach(link => {
+            if (link.getAttribute('href') === currentPath) {
+                link.classList.add('bg-red-600');
+            }
+        });
+    });
+</script>
