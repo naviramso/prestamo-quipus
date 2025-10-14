@@ -37,12 +37,17 @@ db.serialize(() => {
     );
 
     db.run(
-        `
-    CREATE TABLE IF NOT EXISTS estudiantes (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      nombre TEXT,
-      ci TEXT UNIQUE,
-      grado TEXT
+        `CREATE TABLE IF NOT EXISTS estudiantes (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    apellido_paterno TEXT NOT NULL,
+    apellido_materno TEXT NOT NULL,
+    nombres TEXT NOT NULL,
+    ci TEXT UNIQUE NOT NULL,
+    grado TEXT NOT NULL,
+    paralelo TEXT NOT NULL,
+    telefono TEXT,
+    estado TEXT DEFAULT 'activo',
+    fecha_registro DATETIME DEFAULT CURRENT_TIMESTAMP
     )`,
         (err) => {
             if (err) {
@@ -59,6 +64,7 @@ db.serialize(() => {
       username TEXT UNIQUE,
       rol TEXT DEFAULT 'admin',
       contrasenia TEXT
+      fecha_creacion DATETIME DEFAULT CURRENT_TIMESTAMP
     )`,
         (err) => {
             if (err) {
@@ -72,7 +78,25 @@ db.serialize(() => {
     );
 
     db.run(
-        `INSERT INTO administradores (nombre, username, contrasenia) VALUES ('Administrador', 'admin', 'password')`,
+        `CREATE TABLE IF NOT EXISTS config_grados (
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    grado TEXT UNIQUE NOT NULL,
+    paralelos TEXT NOT NULL, -- JSON array: ["A","B","C"]
+    activo BOOLEAN DEFAULT true)`,
+
+        (err) => {
+            if (err) {
+                console.error(
+                    "Error al crear la tabla 'config_grados':",
+                    err.message
+                );
+            }
+            console.log("Tabla 'config_grados' creada");
+        }
+    );
+
+    db.run(
+        `INSERT INTO administradores (nombre, username, contrasenia) VALUES ('Administrador', 'Administrador', 'password')`,
         (err) => {
             if (err) {
                 console.error(
@@ -137,4 +161,24 @@ VALUES (41031, 'disponible'),
             console.log("Lista de Quipus registrados");
         }
     );
+
+    db.get("SELECT COUNT(*) as count FROM config_grados", (err, row) => {
+        if (err) return console.error(err);
+
+        if (row.count === 0) {
+            const gradosConfig = [
+                { grado: "4", paralelos: '["A","B","C"]' },
+                { grado: "5", paralelos: '["A","B","C"]' },
+                { grado: "6", paralelos: '["A","B","C","D"]' },
+            ];
+
+            gradosConfig.forEach((config) => {
+                db.run(
+                    "INSERT INTO config_grados (grado, paralelos) VALUES (?, ?)",
+                    [config.grado, config.paralelos]
+                );
+            });
+            console.log("✅ Configuración de grados inicializada");
+        }
+    });
 });

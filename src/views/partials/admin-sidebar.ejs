@@ -1,7 +1,7 @@
 <!-- Sidebar Administrativo -->
 <div class="flex h-screen bg-gray-100">
     <!-- Sidebar -->
-    <div class="w-full sm:w-64 bg-red-700 text-white shadow-lg" id="sidebar">
+    <div class="w-full sm:w-64 bg-red-700 text-white shadow-lg absolute sm:relative z-50 hidden sm:block h-screen" id="sidebar">
         <!-- Header del Sidebar -->
         <div class="p-4 border-b border-red-600 flex justify-between">
             <div class="flex items-center gap-3">
@@ -15,7 +15,7 @@
             </div>
             <button id="mobile-sidebar-toggle" class="text-white sm:hidden">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
                 </svg>
             </button>
         </div>
@@ -24,7 +24,7 @@
         <nav class="p-4 space-y-2">
             <!-- Dashboard -->
             <a href="/admin/dashboard"
-                class="flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
+                class="nav-link flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
                 <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
@@ -49,13 +49,16 @@
                     </svg>
                 </button>
                 <div id="quipus-menu" class="hidden ml-8 space-y-1 mt-1">
-                    <a href="/admin/quipus" class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
-                        Registrar Quipus
-                    </a>
-                    <a href="/admin/quipus/lista"
-                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
-                        Lista de Quipus
-                    </a>
+                    <% if (admin.rol==='administrador' ) { %>
+                        <a href="/admin/quipus"
+                            class="nav-link block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                            Registrar Quipus
+                        </a>
+                        <% } %>
+                            <a href="/admin/quipus/lista"
+                                class="nav-link block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                                Lista de Quipus
+                            </a>
                 </div>
             </div>
 
@@ -76,76 +79,83 @@
                     </svg>
                 </button>
                 <div id="estudiantes-menu" class="hidden ml-8 space-y-1 mt-1">
-                    <a href="/admin/estudiantes"
-                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
-                        Registrar Estudiante
-                    </a>
-                    <a href="/admin/estudiantes/lista"
-                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
-                        Lista de Estudiantes
-                    </a>
+                    <% if (admin.rol==='administrador' ) { %>
+                        <a href="/admin/estudiantes"
+                            class="nav-link block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                            Registrar Estudiante
+                        </a>
+                        <% } %>
+                            <a href="/admin/estudiantes/lista"
+                                class="nav-link block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                                Lista de Estudiantes
+                            </a>
                 </div>
             </div>
+            <% if (admin.rol==='administrador' ) { %>
+                <!-- Préstamos y Devoluciones -->
+                <a href="/admin/prestamos"
+                    class="nav-link flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                    </svg>
+                    <span>Préstamos</span>
+                </a>
 
-            <!-- Préstamos y Devoluciones -->
-            <a href="/admin/prestamos"
-                class="flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
-                </svg>
-                <span>Préstamos</span>
-            </a>
+                <a href="/admin/devoluciones"
+                    class="nav-link flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    <span>Devoluciones</span>
+                </a>
+                <% } %>
 
-            <a href="/admin/devoluciones"
-                class="flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                <span>Devoluciones</span>
-            </a>
-
-            <!-- Reportes -->
-            <a href="/admin/reportes" class="flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
-                </svg>
-                <span>Reportes</span>
-            </a>
-
-            <!-- Administradores -->
-            <div class="menu-group">
-                <button onclick="toggleSubmenu('admin-menu')"
-                    class="w-full flex items-center justify-between p-3 hover:bg-red-600 rounded-lg transition-colors">
-                    <div class="flex items-center gap-3">
+                    <!-- Reportes -->
+                    <a href="/admin/reportes"
+                        class="nav-link flex items-center gap-3 p-3 hover:bg-red-600 rounded-lg transition-colors">
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
-                        <span>Administradores</span>
-                    </div>
-                    <svg id="admin-arrow" class="w-4 h-4 transform transition-transform" fill="none"
-                        stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
-                    </svg>
-                </button>
-                <div id="admin-menu" class="hidden ml-8 space-y-1 mt-1">
-                    <a href="/admin/administradores/registrar"
-                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
-                        Registrar Admin
+                        <span>Reportes</span>
                     </a>
-                    <a href="/admin/administradores/lista"
-                        class="block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
-                        Lista de Admins
-                    </a>
-                </div>
-            </div>
+
+                    <!-- Administradores -->
+                    <% if (admin.rol==='administrador' ) { %>
+                        <div class="menu-group">
+                            <button onclick="toggleSubmenu('admin-menu')"
+                                class="w-full flex items-center justify-between p-3 hover:bg-red-600 rounded-lg transition-colors">
+                                <div class="flex items-center gap-3">
+                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                    <span>Administradores</span>
+                                </div>
+                                <svg id="admin-arrow" class="w-4 h-4 transform transition-transform" fill="none"
+                                    stroke="currentColor" viewBox="0 0 24 24">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7" />
+                                </svg>
+                            </button>
+                            <div id="admin-menu" class="hidden ml-8 space-y-1 mt-1">
+                                <a href="/admin/administradores/registrar"
+                                    class="nav-link block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                                    Registrar Admin
+                                </a>
+                                <a href="/admin/administradores/lista"
+                                    class="nav-link block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                                    Lista de Admins
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
         </nav>
 
         <!-- Footer del Sidebar -->
-        <div class="absolute bottom-0 w-64 p-4 border-t border-red-600">
+        <div class="absolute bottom-0 w-full sm:w-64 p-4 border-t border-red-600">
             <div class="flex items-center gap-3 mb-3">
                 <div class="w-8 h-8 bg-red-500 rounded-full flex items-center justify-center">
                     <span class="text-sm font-semibold" id="adminInitials">
@@ -178,7 +188,7 @@
         <header class="bg-white shadow-sm border-b">
             <div class="px-6 py-4">
                 <div class="flex justify-between items-center">
-                    <button id="mobile-sidebar-toggle-2" class="text-gray-600">
+                    <button id="mobile-sidebar-toggle-2" class="text-gray-600 sm:hidden">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                                 d="M4 6h16M4 12h16M4 18h16" />
@@ -234,30 +244,49 @@
         }
     }
 
+    // Función para mostrar sidebar en móviles
+    function showMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.remove('hidden');
+    }
+
+    // Función para cerrar sidebar en móviles
+    function closeMobileSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.add('hidden');
+    }
+
     // Mobile sidebar toggle
     document.getElementById('mobile-sidebar-toggle')?.addEventListener('click', function () {
         const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('hidden');
-        sidebar.classList.toggle('absolute');
-        sidebar.classList.toggle('z-50');
+        if (sidebar.classList.contains('hidden')) {
+            showMobileSidebar();
+        } else {
+            closeMobileSidebar();
+        }
     });
 
-    // Mobile sidebar toggle
+    // Mobile sidebar toggle 2
     document.getElementById('mobile-sidebar-toggle-2')?.addEventListener('click', function () {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.toggle('hidden');
-        sidebar.classList.toggle('absolute');
-        sidebar.classList.toggle('z-50');
+        showMobileSidebar();
     });
 
-
-    // Marcar página activa
+    // Cerrar sidebar al hacer clic en enlaces (solo en móviles)
     document.addEventListener('DOMContentLoaded', function () {
         const currentPath = window.location.pathname;
+        
+        // Marcar página activa
         document.querySelectorAll('nav a').forEach(link => {
             if (link.getAttribute('href') === currentPath) {
                 link.classList.add('bg-red-600');
             }
+            
+            // Agregar event listener para cerrar sidebar en móviles
+            link.addEventListener('click', function() {
+                if (window.innerWidth < 640) {
+                    closeMobileSidebar();
+                }
+            });
         });
     });
 </script>

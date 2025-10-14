@@ -1,6 +1,5 @@
 // Middleware para verificar si el usuario está autenticado Y pasar datos a vistas
 const requireAuth = (req, res, next) => {
-    console.log("Session", req.session);
     if (req.session && req.session.admin) {
         res.locals.admin = req.session.admin;
         next();

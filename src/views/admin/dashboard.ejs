@@ -90,239 +90,273 @@
     </div>
 
     <!-- Gráfico y Acciones Rápidas -->
-    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Gráfico de Actividad -->
-        <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border p-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Actividad de Préstamos (Últimos 7 días)</h2>
-            <div class="h-64">
-                <canvas id="graficoPrestamos"></canvas>
-            </div>
+    <% if (admin.rol==='administrador' ) { %>
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            <% } else { %>
+                <div class="grid grid-cols-1 lg:grid-cols-1 gap-6">
+                    <% } %>
+                        <!-- Gráfico de Actividad -->
+                        <div class="lg:col-span-2 bg-white rounded-lg shadow-sm border p-6">
+                            <h2 class="text-lg font-semibold text-gray-800 mb-4">Actividad de Préstamos (Últimos 7 días)
+                            </h2>
+                            <div class="h-64">
+                                <canvas id="graficoPrestamos"></canvas>
+                            </div>
+                        </div>
+
+                        <!-- Acciones Rápidas -->
+                        <% if (admin.rol==='administrador' ) { %>
+                            <div class="bg-white rounded-lg shadow-sm border p-6">
+                                <h2 class="text-lg font-semibold text-gray-800 mb-4">Acciones Rápidas</h2>
+                                <div class="space-y-3">
+                                    <a href="/admin/prestamos"
+                                        class="flex items-center gap-3 p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors group">
+                                        <div
+                                            class="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
+                                            <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-gray-800">Nuevo Préstamo</h3>
+                                            <p class="text-sm text-gray-600">Registrar préstamo</p>
+                                        </div>
+                                    </a>
+
+                                    <a href="/admin/devoluciones"
+                                        class="flex items-center gap-3 p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors group">
+                                        <div
+                                            class="p-2 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
+                                            <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-gray-800">Registrar Devolución</h3>
+                                            <p class="text-sm text-gray-600">Procesar devolución</p>
+                                        </div>
+                                    </a>
+
+                                    <a href="/admin/quipus"
+                                        class="flex items-center gap-3 p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors group">
+                                        <div
+                                            class="p-2 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
+                                            <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-gray-800">Gestionar Quipus</h3>
+                                            <p class="text-sm text-gray-600">Agregar/ver equipos</p>
+                                        </div>
+                                    </a>
+
+                                    <a href="/admin/estudiantes"
+                                        class="flex items-center gap-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors group">
+                                        <div
+                                            class="p-2 bg-orange-100 rounded-lg group-hover:bg-orange-200 transition-colors">
+                                            <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor"
+                                                viewBox="0 0 24 24">
+                                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                                    d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
+                                            </svg>
+                                        </div>
+                                        <div>
+                                            <h3 class="font-medium text-gray-800">Gestionar Estudiantes</h3>
+                                            <p class="text-sm text-gray-600">Registrar estudiantes</p>
+                                        </div>
+                                    </a>
+                                </div>
+                            </div>
+                            <% } %>
+
+                </div>
+
+
+                <!-- Últimos Préstamos Activos -->
+                <div class=" bg-white rounded-lg shadow-sm border">
+                    <div class="p-6 border-b">
+                        <h2 class="text-lg font-semibold text-gray-800">Préstamos Activos Recientes</h2>
+                        <p class="text-gray-600 text-sm">Últimos 5 préstamos pendientes de devolución</p>
+                    </div>
+                    <div class="p-6">
+                        <div class="overflow-x-auto">
+                            <table class="min-w-full table-auto">
+                                <thead>
+                                    <tr class="bg-gray-50">
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Estudiante
+                                        </th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">CI</th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Quipus</th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Fecha Préstamo
+                                        </th>
+                                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Tiempo
+                                            Transcurrido
+                                        </th>
+                                    </tr>
+                                </thead>
+                                <tbody id="tabla-ultimos-prestamos">
+                                    <tr>
+                                        <td colspan="5" class="px-4 py-8 text-center text-gray-500">
+                                            Cargando préstamos...
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
         </div>
 
-        <!-- Acciones Rápidas -->
-        <div class="bg-white rounded-lg shadow-sm border p-6">
-            <h2 class="text-lg font-semibold text-gray-800 mb-4">Acciones Rápidas</h2>
-            <div class="space-y-3">
-                <a href="/admin/prestamos"
-                    class="flex items-center gap-3 p-3 bg-blue-50 hover:bg-blue-100 rounded-lg transition-colors group">
-                    <div class="p-2 bg-blue-100 rounded-lg group-hover:bg-blue-200 transition-colors">
-                        <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-800">Nuevo Préstamo</h3>
-                        <p class="text-sm text-gray-600">Registrar préstamo</p>
-                    </div>
-                </a>
+        <!-- Incluir Chart.js para gráficos -->
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-                <a href="/admin/devoluciones"
-                    class="flex items-center gap-3 p-3 bg-green-50 hover:bg-green-100 rounded-lg transition-colors group">
-                    <div class="p-2 bg-green-100 rounded-lg group-hover:bg-green-200 transition-colors">
-                        <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-800">Registrar Devolución</h3>
-                        <p class="text-sm text-gray-600">Procesar devolución</p>
-                    </div>
-                </a>
+        <script>
+            let grafico;
 
-                <a href="/admin/quipus"
-                    class="flex items-center gap-3 p-3 bg-purple-50 hover:bg-purple-100 rounded-lg transition-colors group">
-                    <div class="p-2 bg-purple-100 rounded-lg group-hover:bg-purple-200 transition-colors">
-                        <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-800">Gestionar Quipus</h3>
-                        <p class="text-sm text-gray-600">Agregar/ver equipos</p>
-                    </div>
-                </a>
+            // Cargar estadísticas al iniciar
+            document.addEventListener('DOMContentLoaded', function () {
+                cargarEstadisticas();
+                cargarGraficoPrestamos();
+                setInterval(cargarEstadisticas, 30000); // Actualizar cada 30 segundos
+            });
 
-                <a href="/admin/estudiantes"
-                    class="flex items-center gap-3 p-3 bg-orange-50 hover:bg-orange-100 rounded-lg transition-colors group">
-                    <div class="p-2 bg-orange-100 rounded-lg group-hover:bg-orange-200 transition-colors">
-                        <svg class="w-5 h-5 text-orange-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M18 9v3m0 0v3m0-3h3m-3 0h-3m-2-5a4 4 0 11-8 0 4 4 0 018 0zM3 20a6 6 0 0112 0v1H3v-1z" />
-                        </svg>
-                    </div>
-                    <div>
-                        <h3 class="font-medium text-gray-800">Gestionar Estudiantes</h3>
-                        <p class="text-sm text-gray-600">Registrar estudiantes</p>
-                    </div>
-                </a>
-            </div>
-        </div>
-    </div>
+            async function cargarEstadisticas() {
+                try {
+                    const response = await fetch('/api/estadisticas');
+                    const data = await response.json();
 
-    <!-- Últimos Préstamos Activos -->
-    <div class="bg-white rounded-lg shadow-sm border">
-        <div class="p-6 border-b">
-            <h2 class="text-lg font-semibold text-gray-800">Préstamos Activos Recientes</h2>
-            <p class="text-gray-600 text-sm">Últimos 5 préstamos pendientes de devolución</p>
-        </div>
-        <div class="p-6">
-            <div class="overflow-x-auto">
-                <table class="min-w-full table-auto">
-                    <thead>
-                        <tr class="bg-gray-50">
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Estudiante</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">CI</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Quipus</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Fecha Préstamo</th>
-                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Tiempo Transcurrido</th>
-                        </tr>
-                    </thead>
-                    <tbody id="tabla-ultimos-prestamos">
-                        <tr>
-                            <td colspan="5" class="px-4 py-8 text-center text-gray-500">
-                                Cargando préstamos...
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-</div>
+                    if (response.ok) {
+                        // Actualizar tarjetas
+                        document.getElementById('totalQuipus').textContent = data.totalQuipus;
+                        document.getElementById('quipusDisponibles').textContent = data.quipusDisponibles + ' disponibles';
+                        document.getElementById('totalEstudiantes').textContent = data.totalEstudiantes;
+                        document.getElementById('prestamosActivos').textContent = data.prestamosActivos;
+                        document.getElementById('prestamosHoy').textContent = data.prestamosHoy + ' hoy';
 
-<!-- Incluir Chart.js para gráficos -->
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+                        // Calcular tasa de uso - CORREGIDO EL ERROR DE TIPEO
+                        const tasaUso = data.totalQuipus > 0 ?
+                            Math.round((data.prestamosActivos / data.totalQuipus) * 100) : 0;
+                        document.getElementById('tasaUso').textContent = tasaUso + '%';
 
-<script>
-    let grafico;
-
-    // Cargar estadísticas al iniciar
-    document.addEventListener('DOMContentLoaded', function () {
-        cargarEstadisticas();
-        cargarGraficoPrestamos();
-        setInterval(cargarEstadisticas, 30000); // Actualizar cada 30 segundos
-    });
-
-    async function cargarEstadisticas() {
-        try {
-            const response = await fetch('/api/estadisticas');
-            const data = await response.json();
-
-            if (response.ok) {
-                // Actualizar tarjetas
-                document.getElementById('totalQuipus').textContent = data.totalQuipus;
-                document.getElementById('quipusDisponibles').textContent = data.quipusDisponibles + ' disponibles';
-                document.getElementById('totalEstudiantes').textContent = data.totalEstudiantes;
-                document.getElementById('prestamosActivos').textContent = data.prestamosActivos;
-                document.getElementById('prestamosHoy').textContent = data.prestamosHoy + ' hoy';
-
-                // Calcular tasa de uso
-                const tasaUso = data.totalQuipus > 0 ?
-                    Math.round((data.prestamosActivos / data.totalQuipus) * 100) : 0;
-                document.getElementById('tasaUso').textContent = tasaUpo + '%';
-
-                // Actualizar últimos préstamos
-                actualizarUltimosPrestamos(data.ultimosPrestamos);
-            } else {
-                console.error('Error al cargar estadísticas:', data.error);
-            }
-        } catch (error) {
-            console.error('Error de conexión:', error);
-        }
-    }
-
-    async function cargarGraficoPrestamos() {
-        try {
-            const response = await fetch('/api/grafico-prestamos');
-            const datos = await response.json();
-
-            if (response.ok) {
-                // Preparar datos para el gráfico
-                const fechas = datos.map(item => {
-                    const fecha = new Date(item.fecha);
-                    return fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
-                });
-
-                const cantidades = datos.map(item => item.cantidad);
-
-                // Crear o actualizar gráfico
-                const ctx = document.getElementById('graficoPrestamos').getContext('2d');
-
-                if (grafico) {
-                    grafico.destroy();
+                        // Actualizar últimos préstamos
+                        actualizarUltimosPrestamos(data.ultimosPrestamos);
+                    } else {
+                        console.error('Error al cargar estadísticas:', data.error);
+                    }
+                } catch (error) {
+                    console.error('Error de conexión:', error);
                 }
+            }
 
-                grafico = new Chart(ctx, {
-                    type: 'line',
-                    data: {
-                        labels: fechas,
-                        datasets: [{
-                            label: 'Préstamos por día',
-                            data: cantidades,
-                            borderColor: '#dc2626',
-                            backgroundColor: 'rgba(220, 38, 38, 0.1)',
-                            borderWidth: 2,
-                            fill: true,
-                            tension: 0.4
-                        }]
-                    },
-                    options: {
-                        responsive: true,
-                        maintainAspectRatio: false,
-                        plugins: {
-                            legend: {
-                                display: false
-                            }
+            async function cargarGraficoPrestamos() {
+                try {
+                    const response = await fetch('/api/grafico-prestamos');
+
+                    if (!response.ok) {
+                        console.warn('No se pudo cargar el gráfico:', response.status);
+                        return;
+                    }
+
+                    const datos = await response.json();
+
+                    // Preparar datos para el gráfico
+                    const fechas = datos.map(item => {
+                        const fecha = new Date(item.fecha);
+                        return fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+                    });
+
+                    const cantidades = datos.map(item => item.cantidad);
+
+                    // Crear o actualizar gráfico
+                    const ctx = document.getElementById('graficoPrestamos').getContext('2d');
+
+                    if (grafico) {
+                        grafico.destroy();
+                    }
+
+                    grafico = new Chart(ctx, {
+                        type: 'line',
+                        data: {
+                            labels: fechas,
+                            datasets: [{
+                                label: 'Préstamos por día',
+                                data: cantidades,
+                                borderColor: '#dc2626',
+                                backgroundColor: 'rgba(220, 38, 38, 0.1)',
+                                borderWidth: 2,
+                                fill: true,
+                                tension: 0.4
+                            }]
                         },
-                        scales: {
-                            y: {
-                                beginAtZero: true,
-                                ticks: {
-                                    stepSize: 1
+                        options: {
+                            responsive: true,
+                            maintainAspectRatio: false,
+                            plugins: {
+                                legend: {
+                                    display: false
+                                }
+                            },
+                            scales: {
+                                y: {
+                                    beginAtZero: true,
+                                    ticks: {
+                                        stepSize: 1
+                                    }
                                 }
                             }
                         }
-                    }
-                });
+                    });
+                } catch (error) {
+                    console.error('Error al cargar gráfico:', error);
+                    // Mostrar mensaje de error en el gráfico
+                    const canvas = document.getElementById('graficoPrestamos');
+                    const ctx = canvas.getContext('2d');
+                    ctx.fillStyle = '#f3f4f6';
+                    ctx.fillRect(0, 0, canvas.width, canvas.height);
+                    ctx.fillStyle = '#6b7280';
+                    ctx.textAlign = 'center';
+                    ctx.font = '14px Arial';
+                    ctx.fillText('No hay datos disponibles para el gráfico', canvas.width / 2, canvas.height / 2);
+                }
             }
-        } catch (error) {
-            console.error('Error al cargar gráfico:', error);
-        }
-    }
 
-    function actualizarUltimosPrestamos(prestamos) {
-        const tbody = document.getElementById('tabla-ultimos-prestamos');
+            function actualizarUltimosPrestamos(prestamos) {
+                const tbody = document.getElementById('tabla-ultimos-prestamos');
 
-        if (prestamos.length === 0) {
-            tbody.innerHTML = `
+                if (!prestamos || prestamos.length === 0) {
+                    tbody.innerHTML = `
                 <tr>
                     <td colspan="5" class="px-4 py-8 text-center text-gray-500">
                         No hay préstamos activos
                     </td>
                 </tr>
             `;
-            return;
-        }
+                    return;
+                }
 
-        tbody.innerHTML = prestamos.map(prestamo => {
-            const fechaPrestamo = new Date(prestamo.fecha_prestamo);
-            const ahora = new Date();
-            const diferencia = Math.floor((ahora - fechaPrestamo) / (1000 * 60 * 60)); // Horas
+                tbody.innerHTML = prestamos.map(prestamo => {
+                    const fechaPrestamo = new Date(prestamo.fecha_prestamo);
+                    const ahora = new Date();
+                    const diferencia = Math.floor((ahora - fechaPrestamo) / (1000 * 60 * 60)); // Horas
 
-            let tiempoTexto = '';
-            if (diferencia < 1) {
-                tiempoTexto = 'Menos de 1 hora';
-            } else if (diferencia < 24) {
-                tiempoTexto = `${diferencia} hora${diferencia > 1 ? 's' : ''}`;
-            } else {
-                const dias = Math.floor(diferencia / 24);
-                tiempoTexto = `${dias} día${dias > 1 ? 's' : ''}`;
-            }
+                    let tiempoTexto = '';
+                    if (diferencia < 1) {
+                        tiempoTexto = 'Menos de 1 hora';
+                    } else if (diferencia < 24) {
+                        tiempoTexto = `${diferencia} hora${diferencia > 1 ? 's' : ''}`;
+                    } else {
+                        const dias = Math.floor(diferencia / 24);
+                        tiempoTexto = `${dias} día${dias > 1 ? 's' : ''}`;
+                    }
 
-            return `
+                    return `
                 <tr class="border-b hover:bg-gray-50">
                     <td class="px-4 py-3 text-sm text-gray-900">${prestamo.nombre}</td>
                     <td class="px-4 py-3 text-sm text-gray-600">${prestamo.ci}</td>
@@ -335,11 +369,11 @@
                     </td>
                 </tr>
             `;
-        }).join('');
-    }
+                }).join('');
+            }
 
-    // Función para formatear números
-    function formatoNumero(numero) {
-        return new Intl.NumberFormat('es-ES').format(numero);
-    }
-</script>
+            // Función para formatear números
+            function formatoNumero(numero) {
+                return new Intl.NumberFormat('es-ES').format(numero);
+            }
+        </script>

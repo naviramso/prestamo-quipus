@@ -1,0 +1,552 @@
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm border p-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Gestión de Préstamos</h1>
+                <p class="text-gray-600">Registro y control de préstamos de quipus</p>
+            </div>
+            <div class="flex space-x-3">
+                <a href="/admin/devoluciones"
+                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Registrar Devolución
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Estadísticas Rápidas -->
+    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+        <div class="bg-white rounded-lg shadow-sm border p-4">
+            <div class="flex items-center">
+                <div class="p-2 bg-yellow-100 rounded-lg">
+                    <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M8 14v3m4-3v3m4-3v3M3 21h18M3 10h18M3 7l9-4 9 4M4 10h16v11H4V10z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-600">Activos</p>
+                    <p class="text-xl font-semibold text-gray-900" id="estadisticaActivos">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border p-4">
+            <div class="flex items-center">
+                <div class="p-2 bg-green-100 rounded-lg">
+                    <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-600">Hoy</p>
+                    <p class="text-xl font-semibold text-gray-900" id="estadisticaHoy">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border p-4">
+            <div class="flex items-center">
+                <div class="p-2 bg-blue-100 rounded-lg">
+                    <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-600">Esta Semana</p>
+                    <p class="text-xl font-semibold text-gray-900" id="estadisticaSemana">0</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="bg-white rounded-lg shadow-sm border p-4">
+            <div class="flex items-center">
+                <div class="p-2 bg-red-100 rounded-lg">
+                    <svg class="w-5 h-5 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                    </svg>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm font-medium text-gray-600">Vencidos</p>
+                    <p class="text-xl font-semibold text-gray-900" id="estadisticaVencidos">0</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Formulario de Préstamo -->
+    <div class="bg-white rounded-lg shadow-sm border p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6">Registrar Nuevo Préstamo</h2>
+
+        <form id="form-prestamo" class="space-y-6">
+            <!-- Búsqueda de Estudiante -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Buscar Estudiante *
+                </label>
+                <div class="relative">
+                    <input type="text" id="buscarEstudiante"
+                        placeholder="Ingrese CI, nombre o apellido del estudiante..."
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors">
+                    <div id="resultadosEstudiantes"
+                        class="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg hidden max-h-60 overflow-y-auto">
+                    </div>
+                </div>
+                <p class="text-xs text-gray-500 mt-1">Escriba al menos 2 caracteres para buscar</p>
+            </div>
+
+            <!-- Información del Estudiante Seleccionado -->
+            <div id="infoEstudiante" class="hidden bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <div class="flex justify-between items-start">
+                    <div>
+                        <h4 class="font-medium text-blue-800" id="estudianteNombre">-</h4>
+                        <div class="mt-2 grid grid-cols-2 gap-4 text-sm">
+                            <div>
+                                <span class="text-blue-600 font-medium">CI:</span>
+                                <span id="estudianteCI" class="ml-2 text-blue-800">-</span>
+                            </div>
+                            <div>
+                                <span class="text-blue-600 font-medium">Grado/Paralelo:</span>
+                                <span id="estudianteGrado" class="ml-2 text-blue-800">-</span>
+                            </div>
+                            <div>
+                                <span class="text-blue-600 font-medium">Teléfono:</span>
+                                <span id="estudianteTelefono" class="ml-2 text-blue-800">-</span>
+                            </div>
+                            <div>
+                                <span class="text-blue-600 font-medium">Préstamos Activos:</span>
+                                <span id="estudiantePrestamos" class="ml-2 text-blue-800">0</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="button" onclick="deseleccionarEstudiante()" class="text-blue-600 hover:text-blue-800">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Selección de Quipus -->
+            <div class="grid grid-cols-1 md:grid-cols-1 gap-6">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Seleccionar Quipus *
+                    </label>
+                    <select id="selectQuipus" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent transition-colors">
+                        <option value="">Cargando quipus disponibles...</option>
+                    </select>
+                    <div class="mt-2 flex items-center text-sm text-gray-500">
+                        <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        <span id="contadorQuipus">0 quipus disponibles</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Resumen y Confirmación -->
+            <div id="resumenPrestamo" class="hidden bg-gray-50 border border-gray-200 rounded-lg p-4">
+                <h4 class="font-medium text-gray-800 mb-3">Resumen del Préstamo</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <span class="text-gray-600">Estudiante:</span>
+                        <span id="resumenEstudiante" class="ml-2 font-medium">-</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Quipus:</span>
+                        <span id="resumenQuipus" class="ml-2 font-medium">-</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Fecha:</span>
+                        <span id="resumenFecha" class="ml-2 font-medium">-</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Hora:</span>
+                        <span id="resumenHora" class="ml-2 font-medium">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex space-x-4 pt-4">
+                <button type="submit" id="btnRegistrar"
+                    class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-md font-medium transition-colors flex items-center disabled:opacity-50 disabled:cursor-not-allowed"
+                    disabled>
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                    </svg>
+                    Registrar Préstamo
+                </button>
+
+                <button type="button" onclick="limpiarFormulario()"
+                    class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-md font-medium transition-colors">
+                    Limpiar
+                </button>
+            </div>
+        </form>
+
+        <div id="mensaje" class="mt-6 p-4 rounded-md hidden"></div>
+    </div>
+
+    <!-- Lista de Préstamos Activos -->
+    <div class="bg-white rounded-lg shadow-sm border">
+        <div class="p-6 border-b">
+            <h2 class="text-lg font-semibold text-gray-800">Préstamos Activos</h2>
+            <p class="text-gray-600 text-sm">Préstamos pendientes de devolución</p>
+        </div>
+
+        <div class="p-6">
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Estudiante</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">CI</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Grado</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Quipus</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Fecha Préstamo</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Tiempo</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-prestamos-activos">
+                        <tr>
+                            <td colspan="7" class="px-4 py-8 text-center text-gray-500">
+                                <div class="flex justify-center">
+                                    <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+                                </div>
+                                <p class="mt-2">Cargando préstamos activos...</p>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    let estudianteSeleccionado = null;
+    let quipusDisponibles = [];
+
+    // Cargar datos al iniciar
+    document.addEventListener('DOMContentLoaded', function () {
+        cargarEstadisticas();
+        cargarQuipusDisponibles();
+        cargarPrestamosActivos();
+
+        // Configurar event listeners
+        configurarBusquedaEstudiantes();
+        document.getElementById('selectQuipus').addEventListener('change', actualizarResumen);
+        document.getElementById('form-prestamo').addEventListener('submit', registrarPrestamo);
+
+        // Actualizar cada 30 segundos
+        setInterval(() => {
+            cargarEstadisticas();
+            cargarPrestamosActivos();
+        }, 30000);
+    });
+
+    function configurarBusquedaEstudiantes() {
+        const inputBusqueda = document.getElementById('buscarEstudiante');
+        const resultados = document.getElementById('resultadosEstudiantes');
+        let timeout = null;
+
+        inputBusqueda.addEventListener('input', function () {
+            clearTimeout(timeout);
+            timeout = setTimeout(() => {
+                const query = this.value.trim();
+                if (query.length >= 2) {
+                    buscarEstudiantes(query);
+                } else {
+                    resultados.classList.add('hidden');
+                }
+            }, 300);
+        });
+
+        // Ocultar resultados al hacer clic fuera
+        document.addEventListener('click', function (e) {
+            if (!inputBusqueda.contains(e.target) && !resultados.contains(e.target)) {
+                resultados.classList.add('hidden');
+            }
+        });
+    }
+
+    async function buscarEstudiantes(query) {
+        try {
+            const response = await fetch(`/api/estudiantes/buscar?q=${encodeURIComponent(query)}`);
+            const estudiantes = await response.json();
+            const resultados = document.getElementById('resultadosEstudiantes');
+            resultados.innerHTML = '';
+
+            if (estudiantes.length === 0) {
+                resultados.innerHTML = `
+                    <div class="p-3 text-gray-500 text-sm">
+                        No se encontraron estudiantes
+                    </div>
+                `;
+            } else {
+                estudiantes.forEach(estudiante => {
+                    const item = document.createElement('div');
+                    item.className = 'p-3 border-b border-gray-100 hover:bg-gray-50 cursor-pointer';
+                    item.innerHTML = `
+                        <div class="font-medium text-gray-900">
+                            ${estudiante.apellido_paterno} ${estudiante.apellido_materno} ${estudiante.nombres}
+                        </div>
+                        <div class="text-sm text-gray-600">
+                            CI: ${estudiante.ci} | ${estudiante.grado}° ${estudiante.paralelo}
+                        </div>
+                    `;
+                    item.addEventListener('click', () => seleccionarEstudiante(estudiante));
+                    resultados.appendChild(item);
+                });
+            }
+
+            resultados.classList.remove('hidden');
+        } catch (error) {
+            console.error('Error al buscar estudiantes:', error);
+        }
+    }
+
+    function seleccionarEstudiante(estudiante) {
+        estudianteSeleccionado = estudiante;
+
+        // Actualizar UI
+        document.getElementById('buscarEstudiante').value =
+            `${estudiante.apellido_paterno} ${estudiante.apellido_materno} ${estudiante.nombres}`;
+        document.getElementById('resultadosEstudiantes').classList.add('hidden');
+
+        document.getElementById('estudianteNombre').textContent =
+            `${estudiante.apellido_paterno} ${estudiante.apellido_materno} ${estudiante.nombres}`;
+        document.getElementById('estudianteCI').textContent = estudiante.ci;
+        document.getElementById('estudianteGrado').textContent = `${estudiante.grado}° ${estudiante.paralelo}`;
+        document.getElementById('estudianteTelefono').textContent = estudiante.telefono || 'No registrado';
+
+        // Contar préstamos activos del estudiante
+        const prestamosActivos = document.querySelectorAll(`[data-ci="${estudiante.ci}"]`);
+        document.getElementById('estudiantePrestamos').textContent = prestamosActivos.length;
+
+        document.getElementById('infoEstudiante').classList.remove('hidden');
+        actualizarResumen();
+        validarFormulario();
+    }
+
+    function deseleccionarEstudiante() {
+        estudianteSeleccionado = null;
+        document.getElementById('buscarEstudiante').value = '';
+        document.getElementById('infoEstudiante').classList.add('hidden');
+        document.getElementById('resumenPrestamo').classList.add('hidden');
+        validarFormulario();
+    }
+
+    async function cargarQuipusDisponibles() {
+        try {
+            const response = await fetch('/api/quipus/disponibles');
+            quipusDisponibles = await response.json();
+
+            const select = document.getElementById('selectQuipus');
+            select.innerHTML = '<option value="">Seleccionar quipus...</option>';
+
+            quipusDisponibles.forEach(quipu => {
+                const option = document.createElement('option');
+                option.value = quipu.codigo;
+                option.textContent = quipu.codigo;
+                select.appendChild(option);
+            });
+
+            document.getElementById('contadorQuipus').textContent =
+                `${quipusDisponibles.length} quipus disponibles`;
+        } catch (error) {
+            console.error('Error al cargar quipus disponibles:', error);
+        }
+    }
+
+    function actualizarResumen() {
+        const quipusSeleccionado = document.getElementById('selectQuipus').value;
+
+        if (estudianteSeleccionado && quipusSeleccionado) {
+            const ahora = new Date();
+
+            document.getElementById('resumenEstudiante').textContent =
+                `${estudianteSeleccionado.apellido_paterno} ${estudianteSeleccionado.apellido_materno} ${estudianteSeleccionado.nombres}`;
+            document.getElementById('resumenQuipus').textContent = quipusSeleccionado;
+            document.getElementById('resumenFecha').textContent = ahora.toLocaleDateString('es-ES');
+            document.getElementById('resumenHora').textContent = ahora.toLocaleTimeString('es-ES');
+
+            document.getElementById('resumenPrestamo').classList.remove('hidden');
+        } else {
+            document.getElementById('resumenPrestamo').classList.add('hidden');
+        }
+
+        validarFormulario();
+    }
+
+    function validarFormulario() {
+        const estudianteValido = estudianteSeleccionado !== null;
+        const quipusValido = document.getElementById('selectQuipus').value !== '';
+        const btnRegistrar = document.getElementById('btnRegistrar');
+
+        btnRegistrar.disabled = !(estudianteValido && quipusValido);
+    }
+
+    async function registrarPrestamo(e) {
+        e.preventDefault();
+
+        if (!estudianteSeleccionado) {
+            mostrarMensaje('error', 'Debe seleccionar un estudiante');
+            return;
+        }
+
+        const quipusSeleccionado = document.getElementById('selectQuipus').value;
+        const observaciones = document.getElementById('observaciones').value;
+
+        // Deshabilitar botón durante el proceso
+        const btnRegistrar = document.getElementById('btnRegistrar');
+        btnRegistrar.disabled = true;
+        btnRegistrar.innerHTML = `
+            <div class="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></div>
+            Registrando...
+        `;
+
+        try {
+            const response = await fetch('/api/prestamos/registrar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    estudiante_id: estudianteSeleccionado.id,
+                    codigo_quipus: quipusSeleccionado,
+                    observaciones: observaciones
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                mostrarMensaje('success', data.mensaje);
+                limpiarFormulario();
+                // Recargar datos
+                cargarEstadisticas();
+                cargarQuipusDisponibles();
+                cargarPrestamosActivos();
+            } else {
+                mostrarMensaje('error', data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarMensaje('error', 'Error de conexión. Intenta nuevamente.');
+        } finally {
+            // Restaurar botón
+            btnRegistrar.disabled = false;
+            btnRegistrar.innerHTML = `
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                </svg>
+                Registrar Préstamo
+            `;
+        }
+    }
+
+    function limpiarFormulario() {
+        estudianteSeleccionado = null;
+        document.getElementById('buscarEstudiante').value = '';
+        document.getElementById('selectQuipus').value = '';
+        document.getElementById('observaciones').value = '';
+        document.getElementById('infoEstudiante').classList.add('hidden');
+        document.getElementById('resumenPrestamo').classList.add('hidden');
+        validarFormulario();
+    }
+
+    async function cargarEstadisticas() {
+        try {
+            const response = await fetch('/api/prestamos/estadisticas');
+            const estadisticas = await response.json();
+
+            document.getElementById('estadisticaActivos').textContent = estadisticas.activos;
+            document.getElementById('estadisticaHoy').textContent = estadisticas.hoy;
+            document.getElementById('estadisticaSemana').textContent = estadisticas.semana;
+            document.getElementById('estadisticaVencidos').textContent = estadisticas.vencidos;
+        } catch (error) {
+            console.error('Error al cargar estadísticas:', error);
+        }
+    }
+
+    async function cargarPrestamosActivos() {
+        try {
+            const response = await fetch('/api/prestamos/activos');
+            const prestamos = await response.json();
+
+            const tbody = document.getElementById('tabla-prestamos-activos');
+
+            if (prestamos.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="px-4 py-8 text-center text-gray-500">
+                            No hay préstamos activos en este momento.
+                        </td>
+                    </tr>
+                `;
+            } else {
+                tbody.innerHTML = prestamos.map(prestamo => {
+                    const fechaPrestamo = new Date(prestamo.fecha_prestamo);
+                    const diasTranscurridos = Math.floor(prestamo.dias_transcurridos);
+
+                    let estadoBadge = '';
+                    if (diasTranscurridos > 7) {
+                        estadoBadge = '<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Vencido</span>';
+                    } else if (diasTranscurridos > 3) {
+                        estadoBadge = '<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-yellow-100 text-yellow-800">Por Vencer</span>';
+                    } else {
+                        estadoBadge = '<span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Activo</span>';
+                    }
+
+                    return `
+                        <tr class="border-b hover:bg-gray-50" data-ci="${prestamo.ci}">
+                            <td class="px-4 py-3 text-sm text-gray-900">${prestamo.estudiante_nombre}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">${prestamo.ci}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">${prestamo.grado}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600 font-medium">${prestamo.codigo}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">${fechaPrestamo.toLocaleString()}</td>
+                            <td class="px-4 py-3 text-sm text-gray-600">${diasTranscurridos} día${diasTranscurridos !== 1 ? 's' : ''}</td>
+                            <td class="px-4 py-3">${estadoBadge}</td>
+                        </tr>
+                    `;
+                }).join('');
+            }
+        } catch (error) {
+            console.error('Error al cargar préstamos activos:', error);
+        }
+    }
+
+    function mostrarMensaje(tipo, texto) {
+        const mensaje = document.getElementById('mensaje');
+        mensaje.textContent = texto;
+        mensaje.className = 'mt-6 p-4 rounded-md';
+
+        if (tipo === 'success') {
+            mensaje.classList.add('bg-green-100', 'border', 'border-green-400', 'text-green-700');
+        } else {
+            mensaje.classList.add('bg-red-100', 'border', 'border-red-400', 'text-red-700');
+        }
+
+        mensaje.classList.remove('hidden');
+
+        // Auto-ocultar mensajes de éxito después de 5 segundos
+        if (tipo === 'success') {
+            setTimeout(() => {
+                mensaje.classList.add('hidden');
+            }, 5000);
+        }
+    }
+</script>

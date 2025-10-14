@@ -1,0 +1,390 @@
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm border p-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Registro de Devoluciones</h1>
+                <p class="text-gray-600">Procesar devoluciones de quipus prestados</p>
+            </div>
+            <a href="/admin/prestamos" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-medium transition-colors flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                </svg>
+                Volver a Préstamos
+            </a>
+        </div>
+    </div>
+
+    <!-- Búsqueda de Préstamos Activos -->
+    <div class="bg-white rounded-lg shadow-sm border p-6">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6">Buscar Préstamo para Devolución</h2>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Buscar por Estudiante</label>
+                <input 
+                    type="text" 
+                    id="buscarEstudianteDevolucion" 
+                    placeholder="Nombre, apellido o CI..."
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                >
+            </div>
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Buscar por Quipus</label>
+                <input 
+                    type="text" 
+                    id="buscarQuipusDevolucion" 
+                    placeholder="Código del quipus..."
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                >
+            </div>
+            <div class="flex items-end">
+                <button 
+                    onclick="filtrarPrestamos()"
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md w-full transition-colors flex items-center justify-center"
+                >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                    </svg>
+                    Buscar
+                </button>
+            </div>
+        </div>
+
+        <!-- Lista de Préstamos para Devolución -->
+        <div class="overflow-x-auto">
+            <table class="min-w-full table-auto">
+                <thead>
+                    <tr class="bg-gray-50">
+                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Estudiante</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">CI</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Quipus</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Fecha Préstamo</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Días</th>
+                        <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Acción</th>
+                    </tr>
+                </thead>
+                <tbody id="tabla-prestamos-devolucion">
+                    <tr>
+                        <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                            <div class="flex justify-center">
+                                <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+                            </div>
+                            <p class="mt-2">Cargando préstamos activos...</p>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Formulario de Devolución -->
+    <div id="formularioDevolucion" class="bg-white rounded-lg shadow-sm border p-6 hidden">
+        <h2 class="text-xl font-semibold text-gray-800 mb-6">Registrar Devolución</h2>
+        
+        <form id="form-devolucion" class="space-y-6">
+            <input type="hidden" id="prestamoId">
+            
+            <!-- Información del Préstamo -->
+            <div class="bg-blue-50 border border-blue-200 rounded-lg p-4">
+                <h4 class="font-medium text-blue-800 mb-3">Información del Préstamo</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 text-sm">
+                    <div>
+                        <span class="text-blue-600 font-medium">Estudiante:</span>
+                        <span id="devolucionEstudiante" class="ml-2 text-blue-800">-</span>
+                    </div>
+                    <div>
+                        <span class="text-blue-600 font-medium">CI:</span>
+                        <span id="devolucionCI" class="ml-2 text-blue-800">-</span>
+                    </div>
+                    <div>
+                        <span class="text-blue-600 font-medium">Quipus:</span>
+                        <span id="devolucionQuipus" class="ml-2 text-blue-800 font-medium">-</span>
+                    </div>
+                    <div>
+                        <span class="text-blue-600 font-medium">Fecha Préstamo:</span>
+                        <span id="devolucionFechaPrestamo" class="ml-2 text-blue-800">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observaciones de Devolución -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Observaciones de la Devolución *
+                </label>
+                <div class="space-y-3">
+                    <div class="flex items-center">
+                        <input type="radio" id="observacionBueno" name="observacion" value="Equipo en buen estado" class="mr-2" checked>
+                        <label for="observacionBueno" class="text-sm text-gray-700">Equipo en buen estado</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="observacionRayones" name="observacion" value="Equipo con rayones menores" class="mr-2">
+                        <label for="observacionRayones" class="text-sm text-gray-700">Equipo con rayones menores</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="observacionDanado" name="observacion" value="Equipo dañado - reportar" class="mr-2">
+                        <label for="observacionDanado" class="text-sm text-gray-700">Equipo dañado - reportar</label>
+                    </div>
+                    <div class="flex items-center">
+                        <input type="radio" id="observacionOtro" name="observacion" value="otro" class="mr-2">
+                        <label for="observacionOtro" class="text-sm text-gray-700">Otra observación</label>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Observación Personalizada -->
+            <div id="observacionPersonalizada" class="hidden">
+                <label class="block text-sm font-medium text-gray-700 mb-2">
+                    Describe la observación
+                </label>
+                <textarea 
+                    id="observacionTexto"
+                    placeholder="Describe el estado del equipo, problemas encontrados, etc."
+                    rows="3"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
+                ></textarea>
+            </div>
+
+            <!-- Información Adicional -->
+            <div class="bg-gray-50 border border-gray-200 rounded-lg p-4">
+                <h4 class="font-medium text-gray-800 mb-2">Resumen de la Devolución</h4>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+                    <div>
+                        <span class="text-gray-600">Fecha de Devolución:</span>
+                        <span id="devolucionFecha" class="ml-2 font-medium">-</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Hora de Devolución:</span>
+                        <span id="devolucionHora" class="ml-2 font-medium">-</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Tiempo de Préstamo:</span>
+                        <span id="devolucionTiempo" class="ml-2 font-medium">-</span>
+                    </div>
+                    <div>
+                        <span class="text-gray-600">Estado del Quipus:</span>
+                        <span class="ml-2 font-medium text-green-600">Disponible</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="flex space-x-4 pt-4">
+                <button 
+                    type="submit"
+                    class="bg-red-600 hover:bg-red-700 text-white py-2 px-6 rounded-md font-medium transition-colors flex items-center"
+                >
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Registrar Devolución
+                </button>
+                
+                <button 
+                    type="button"
+                    onclick="cancelarDevolucion()"
+                    class="bg-gray-500 hover:bg-gray-600 text-white py-2 px-6 rounded-md font-medium transition-colors"
+                >
+                    Cancelar
+                </button>
+            </div>
+        </form>
+
+        <div id="mensajeDevolucion" class="mt-6 p-4 rounded-md hidden"></div>
+    </div>
+</div>
+
+<script>
+    let prestamosActivos = [];
+    let prestamoSeleccionado = null;
+
+    // Cargar préstamos activos al iniciar
+    document.addEventListener('DOMContentLoaded', function() {
+        cargarPrestamosDevolucion();
+        
+        // Event listeners
+        document.getElementById('buscarEstudianteDevolucion').addEventListener('input', filtrarPrestamos);
+        document.getElementById('buscarQuipusDevolucion').addEventListener('input', filtrarPrestamos);
+        
+        // Observaciones
+        document.querySelectorAll('input[name="observacion"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                document.getElementById('observacionPersonalizada').classList.toggle('hidden', this.value !== 'otro');
+            });
+        });
+        
+        document.getElementById('form-devolucion').addEventListener('submit', registrarDevolucion);
+    });
+
+    async function cargarPrestamosDevolucion() {
+        try {
+            const response = await fetch('/api/prestamos/activos');
+            prestamosActivos = await response.json();
+            renderizarPrestamosDevolucion(prestamosActivos);
+        } catch (error) {
+            console.error('Error al cargar préstamos:', error);
+        }
+    }
+
+    function renderizarPrestamosDevolucion(prestamos) {
+        const tbody = document.getElementById('tabla-prestamos-devolucion');
+        
+        if (prestamos.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="6" class="px-4 py-8 text-center text-gray-500">
+                        No hay préstamos activos para devolución.
+                    </td>
+                </tr>
+            `;
+        } else {
+            tbody.innerHTML = prestamos.map(prestamo => {
+                const fechaPrestamo = new Date(prestamo.fecha_prestamo);
+                const diasTranscurridos = Math.floor(prestamo.dias_transcurridos);
+                
+                let claseTiempo = 'text-green-600';
+                if (diasTranscurridos > 7) {
+                    claseTiempo = 'text-red-600 font-semibold';
+                } else if (diasTranscurridos > 3) {
+                    claseTiempo = 'text-yellow-600';
+                }
+
+                return `
+                    <tr class="border-b hover:bg-gray-50">
+                        <td class="px-4 py-3 text-sm text-gray-900">${prestamo.estudiante_nombre}</td>
+                        <td class="px-4 py-3 text-sm text-gray-600">${prestamo.ci}</td>
+                        <td class="px-4 py-3 text-sm text-gray-600 font-medium">${prestamo.codigo}</td>
+                        <td class="px-4 py-3 text-sm text-gray-600">${fechaPrestamo.toLocaleDateString()}</td>
+                        <td class="px-4 py-3 text-sm ${claseTiempo}">${diasTranscurridos} día${diasTranscurridos !== 1 ? 's' : ''}</td>
+                        <td class="px-4 py-3">
+                            <button 
+                                onclick="seleccionarPrestamo(${prestamo.id})"
+                                class="bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-sm font-medium transition-colors"
+                            >
+                                Devolver
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+        }
+    }
+
+    function filtrarPrestamos() {
+        const filtroEstudiante = document.getElementById('buscarEstudianteDevolucion').value.toLowerCase();
+        const filtroQuipus = document.getElementById('buscarQuipusDevolucion').value.toUpperCase();
+
+        const prestamosFiltrados = prestamosActivos.filter(prestamo => {
+            const coincideEstudiante = 
+                prestamo.estudiante_nombre.toLowerCase().includes(filtroEstudiante) ||
+                prestamo.ci.includes(filtroEstudiante);
+            const coincideQuipus = prestamo.codigo.includes(filtroQuipus);
+            
+            return coincideEstudiante && coincideQuipus;
+        });
+
+        renderizarPrestamosDevolucion(prestamosFiltrados);
+    }
+
+    function seleccionarPrestamo(prestamoId) {
+        prestamoSeleccionado = prestamosActivos.find(p => p.id === prestamoId);
+        
+        if (!prestamoSeleccionado) return;
+
+        // Llenar información del préstamo
+        document.getElementById('prestamoId').value = prestamoSeleccionado.id;
+        document.getElementById('devolucionEstudiante').textContent = prestamoSeleccionado.estudiante_nombre;
+        document.getElementById('devolucionCI').textContent = prestamoSeleccionado.ci;
+        document.getElementById('devolucionQuipus').textContent = prestamoSeleccionado.codigo;
+        
+        const fechaPrestamo = new Date(prestamoSeleccionado.fecha_prestamo);
+        document.getElementById('devolucionFechaPrestamo').textContent = fechaPrestamo.toLocaleString();
+        
+        // Calcular tiempo transcurrido
+        const ahora = new Date();
+        const diffTiempo = ahora - fechaPrestamo;
+        const dias = Math.floor(diffTiempo / (1000 * 60 * 60 * 24));
+        const horas = Math.floor((diffTiempo % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        
+        document.getElementById('devolucionTiempo').textContent = `${dias}d ${horas}h`;
+        document.getElementById('devolucionFecha').textContent = ahora.toLocaleDateString();
+        document.getElementById('devolucionHora').textContent = ahora.toLocaleTimeString();
+
+        // Mostrar formulario
+        document.getElementById('formularioDevolucion').classList.remove('hidden');
+        
+        // Scroll al formulario
+        document.getElementById('formularioDevolucion').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function cancelarDevolucion() {
+        prestamoSeleccionado = null;
+        document.getElementById('formularioDevolucion').classList.add('hidden');
+        document.getElementById('form-devolucion').reset();
+        document.getElementById('observacionPersonalizada').classList.add('hidden');
+    }
+
+    async function registrarDevolucion(e) {
+        e.preventDefault();
+        
+        if (!prestamoSeleccionado) {
+            mostrarMensajeDevolucion('error', 'No hay préstamo seleccionado');
+            return;
+        }
+
+        // Obtener observación
+        let observacion = document.querySelector('input[name="observacion"]:checked').value;
+        if (observacion === 'otro') {
+            observacion = document.getElementById('observacionTexto').value.trim();
+            if (!observacion) {
+                mostrarMensajeDevolucion('error', 'Debe describir la observación');
+                return;
+            }
+        }
+
+        try {
+            const response = await fetch('/api/devoluciones/registrar', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    prestamo_id: prestamoSeleccionado.id,
+                    observaciones: observacion
+                })
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                mostrarMensajeDevolucion('success', data.mensaje);
+                
+                // Limpiar y recargar
+                setTimeout(() => {
+                    cancelarDevolucion();
+                    cargarPrestamosDevolucion();
+                    // También podrías redirigir o actualizar otras partes de la UI
+                }, 2000);
+            } else {
+                mostrarMensajeDevolucion('error', data.error);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarMensajeDevolucion('error', 'Error de conexión. Intenta nuevamente.');
+        }
+    }
+
+    function mostrarMensajeDevolucion(tipo, texto) {
+        const mensaje = document.getElementById('mensajeDevolucion');
+        mensaje.textContent = texto;
+        mensaje.className = 'mt-6 p-4 rounded-md';
+        
+        if (tipo === 'success') {
+            mensaje.classList.add('bg-green-100', 'border', 'border-green-400', 'text-green-700');
+        } else {
+            mensaje.classList.add('bg-red-100', 'border', 'border-red-400', 'text-red-700');
+        }
+        
+        mensaje.classList.remove('hidden');
+    }
+</script>

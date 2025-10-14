@@ -1,0 +1,699 @@
+<div class="space-y-6">
+    <!-- Header -->
+    <div class="bg-white rounded-lg shadow-sm border p-6">
+        <div class="flex justify-between items-center">
+            <div>
+                <h1 class="text-2xl font-bold text-gray-800">Reportes Avanzados</h1>
+                <p class="text-gray-600">Análisis detallado y métricas del sistema</p>
+            </div>
+            <div class="flex space-x-3">
+                <button onclick="exportarDatos()"
+                    class="bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded-md font-medium transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Exportar
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Filtros Avanzados -->
+    <div class="bg-white rounded-lg shadow-sm border p-6">
+        <h2 class="text-lg font-semibold text-gray-800 mb-4">Filtros de Reporte</h2>
+
+        <form id="form-filtros" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            <!-- Fecha Inicio -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Inicio</label>
+                <input type="date" id="fechaInicio"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            </div>
+
+            <!-- Fecha Fin -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Fecha Fin</label>
+                <input type="date" id="fechaFin"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+            </div>
+
+            <!-- Estado del Préstamo -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Estado</label>
+                <select id="estado"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                    <option value="todos">Todos los estados</option>
+                    <option value="pendiente">Pendientes</option>
+                    <option value="devuelto">Devueltos</option>
+                </select>
+            </div>
+
+            <!-- Grado -->
+            <div>
+                <label class="block text-sm font-medium text-gray-700 mb-1">Grado</label>
+                <select id="grado"
+                    class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                    <option value="">Todos los grados</option>
+                </select>
+            </div>
+
+            <!-- Botones de acción -->
+            <div class="md:col-span-2 lg:col-span-4 flex space-x-3 pt-2">
+                <button type="submit"
+                    class="bg-red-600 hover:bg-red-700 text-white px-6 py-2 rounded-md font-medium transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01-.293.707l-6.414 6.414a1 1 0 00-.293.707V17l-4 4v-6.586a1 1 0 00-.293-.707L3.293 7.293A1 1 0 013 6.586V4z" />
+                    </svg>
+                    Aplicar Filtros
+                </button>
+
+                <button type="button" onclick="limpiarFiltros()"
+                    class="bg-gray-500 hover:bg-gray-600 text-white px-6 py-2 rounded-md font-medium transition-colors">
+                    Limpiar
+                </button>
+
+                <button type="button" onclick="generarReporteCompleto()"
+                    class="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-md font-medium transition-colors flex items-center">
+                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                    </svg>
+                    Métricas Completas
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <!-- Métricas Principales -->
+    <div id="seccion-metricas" class="hidden">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+            <!-- Total Préstamos -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-blue-100 rounded-lg">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Total Préstamos</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="metric-total">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Pendientes -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-yellow-100 rounded-lg">
+                        <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Pendientes</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="metric-pendientes">0</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Tasa de Devolución -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-green-100 rounded-lg">
+                        <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Tasa Devolución</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="metric-tasa">0%</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Promedio Diario -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <div class="flex items-center">
+                    <div class="p-3 bg-purple-100 rounded-lg">
+                        <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M11 3.055A9.001 9.001 0 1020.945 13H11V3.055z" />
+                        </svg>
+                    </div>
+                    <div class="ml-4">
+                        <p class="text-sm font-medium text-gray-600">Promedio/Día</p>
+                        <p class="text-2xl font-semibold text-gray-900" id="metric-promedio">0</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Gráficos y Rankings -->
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
+            <!-- Gráfico de Actividad -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Actividad de Préstamos</h3>
+                <div class="h-64">
+                    <canvas id="graficoActividad"></canvas>
+                </div>
+            </div>
+
+            <!-- Quipus Más Prestados -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Quipus Más Prestados</h3>
+                <div id="ranking-quipus" class="space-y-3">
+                    <div class="text-center text-gray-500 py-8">
+                        Cargando datos...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estudiantes Más Activos -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Estudiantes Más Activos</h3>
+                <div id="ranking-estudiantes" class="space-y-3">
+                    <div class="text-center text-gray-500 py-8">
+                        Cargando datos...
+                    </div>
+                </div>
+            </div>
+
+            <!-- Préstamos por Grado -->
+            <div class="bg-white rounded-lg shadow-sm border p-6">
+                <h3 class="text-lg font-semibold text-gray-800 mb-4">Préstamos por Grado</h3>
+                <div id="grafico-grados" class="h-64">
+                    <canvas id="chartGrados"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Tabla de Resultados -->
+    <div class="bg-white rounded-lg shadow-sm border">
+        <div class="p-6 border-b">
+            <div class="flex justify-between items-center">
+                <div>
+                    <h2 class="text-lg font-semibold text-gray-800">Resultados del Reporte</h2>
+                    <p class="text-gray-600 text-sm" id="contador-resultados">Aplicar filtros para ver resultados</p>
+                </div>
+                <div class="flex items-center space-x-2 text-sm text-gray-500">
+                    <span id="info-fechas"></span>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-6">
+            <div class="overflow-x-auto">
+                <table class="min-w-full table-auto">
+                    <thead>
+                        <tr class="bg-gray-50">
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Estudiante</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">CI</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Grado</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Quipus</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Fecha Préstamo</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Fecha Devolución</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Estado</th>
+                            <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Observaciones</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-resultados">
+                        <tr>
+                            <td colspan="8" class="px-4 py-8 text-center text-gray-500">
+                                Use los filtros para generar un reporte
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginación -->
+            <div class="mt-6 flex items-center justify-between">
+                <p class="text-sm text-gray-700" id="info-paginacion"></p>
+                <div class="flex space-x-2" id="paginacion">
+                    <!-- Los botones de paginación se generarán aquí -->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Incluir Chart.js -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<script>
+    let datosReporte = [];
+    let datosMetricas = {};
+    let paginaActual = 1;
+    const registrosPorPagina = 15;
+    let graficoActividad, graficoGrados;
+
+    // Cargar al iniciar
+    document.addEventListener('DOMContentLoaded', function () {
+        cargarGrados();
+        establecerFechasPorDefecto();
+    });
+
+    // Establecer fechas por defecto (últimos 30 días)
+    function establecerFechasPorDefecto() {
+        const hoy = new Date();
+        const hace30Dias = new Date();
+        hace30Dias.setDate(hoy.getDate() - 30);
+
+        document.getElementById('fechaInicio').value = hace30Dias.toISOString().split('T')[0];
+        document.getElementById('fechaFin').value = hoy.toISOString().split('T')[0];
+    }
+
+    // Cargar lista de grados
+    async function cargarGrados() {
+        try {
+            const response = await fetch('/api/grados');
+            const grados = await response.json();
+
+            const select = document.getElementById('grado');
+            grados.forEach(grado => {
+                const option = document.createElement('option');
+                option.value = grado;
+                option.textContent = grado;
+                select.appendChild(option);
+            });
+        } catch (error) {
+            console.error('Error al cargar grados:', error);
+        }
+    }
+
+    // Aplicar filtros
+    document.getElementById('form-filtros').addEventListener('submit', async function (e) {
+        e.preventDefault();
+        await generarReporte();
+    });
+
+    async function generarReporte() {
+        const filtros = obtenerFiltros();
+
+        try {
+            mostrarLoading();
+
+            // Cargar datos del reporte
+            const response = await fetch(`/api/reportes/avanzado?${new URLSearchParams(filtros)}`);
+            datosReporte = await response.json();
+
+            if (response.ok) {
+                renderizarResultados();
+                actualizarInfoFechas(filtros.fechaInicio, filtros.fechaFin);
+            } else {
+                mostrarError('Error al generar el reporte');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarError('Error de conexión');
+        }
+    }
+
+    async function generarReporteCompleto() {
+        const filtros = obtenerFiltros();
+
+        try {
+            mostrarLoading();
+
+            // Cargar métricas completas
+            const responseMetricas = await fetch(`/api/reportes/metricas?${new URLSearchParams(filtros)}`);
+            datosMetricas = await responseMetricas.json();
+
+            if (responseMetricas.ok) {
+                // Mostrar sección de métricas
+                document.getElementById('seccion-metricas').classList.remove('hidden');
+
+                // Actualizar métricas
+                actualizarMetricas();
+
+                // Cargar también el reporte básico
+                await generarReporte();
+            } else {
+                mostrarError('Error al generar métricas');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarError('Error de conexión');
+        }
+    }
+
+    function obtenerFiltros() {
+        return {
+            fechaInicio: document.getElementById('fechaInicio').value,
+            fechaFin: document.getElementById('fechaFin').value,
+            estado: document.getElementById('estado').value,
+            grado: document.getElementById('grado').value
+        };
+    }
+
+    function actualizarMetricas() {
+        // Métricas principales
+        document.getElementById('metric-total').textContent = datosMetricas.totalPrestamos;
+        document.getElementById('metric-pendientes').textContent = datosMetricas.prestamosPendientes;
+
+        // Calcular tasa de devolución
+        const tasa = datosMetricas.totalPrestamos > 0 ?
+            Math.round(((datosMetricas.totalPrestamos - datosMetricas.prestamosPendientes) / datosMetricas.totalPrestamos) * 100) : 0;
+        document.getElementById('metric-tasa').textContent = tasa + '%';
+
+        // Calcular promedio diario
+        const dias = calcularDiasPeriodo();
+        const promedio = dias > 0 ? Math.round(datosMetricas.totalPrestamos / dias) : 0;
+        document.getElementById('metric-promedio').textContent = promedio;
+
+        // Actualizar rankings
+        actualizarRankingQuipus();
+        actualizarRankingEstudiantes();
+
+        // Crear gráficos
+        crearGraficoActividad();
+        crearGraficoGrados();
+    }
+
+    function calcularDiasPeriodo() {
+        const inicio = document.getElementById('fechaInicio').value;
+        const fin = document.getElementById('fechaFin').value;
+
+        if (!inicio || !fin) return 0;
+
+        const diffTime = Math.abs(new Date(fin) - new Date(inicio));
+        return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
+    }
+
+    function actualizarRankingQuipus() {
+        const contenedor = document.getElementById('ranking-quipus');
+
+        if (!datosMetricas.topQuipus || datosMetricas.topQuipus.length === 0) {
+            contenedor.innerHTML = '<div class="text-center text-gray-500 py-4">No hay datos</div>';
+            return;
+        }
+
+        contenedor.innerHTML = datosMetricas.topQuipus.map((quipu, index) => `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex items-center">
+                    <span class="w-6 h-6 bg-red-100 text-red-800 rounded-full text-xs flex items-center justify-center font-semibold">
+                        ${index + 1}
+                    </span>
+                    <span class="ml-3 font-medium text-gray-900">${quipu.codigo}</span>
+                </div>
+                <span class="bg-red-100 text-red-800 px-2 py-1 rounded-full text-xs font-semibold">
+                    ${quipu.total_prestamos} préstamos
+                </span>
+            </div>
+        `).join('');
+    }
+
+    function actualizarRankingEstudiantes() {
+        const contenedor = document.getElementById('ranking-estudiantes');
+
+        if (!datosMetricas.topEstudiantes || datosMetricas.topEstudiantes.length === 0) {
+            contenedor.innerHTML = '<div class="text-center text-gray-500 py-4">No hay datos</div>';
+            return;
+        }
+
+        contenedor.innerHTML = datosMetricas.topEstudiantes.map((estudiante, index) => `
+            <div class="flex items-center justify-between p-3 bg-gray-50 rounded-lg">
+                <div class="flex-1 min-w-0">
+                    <div class="flex items-center">
+                        <span class="w-6 h-6 bg-blue-100 text-blue-800 rounded-full text-xs flex items-center justify-center font-semibold">
+                            ${index + 1}
+                        </span>
+                        <div class="ml-3 truncate">
+                            <p class="text-sm font-medium text-gray-900 truncate">${estudiante.nombre}</p>
+                            <p class="text-xs text-gray-500">${estudiante.grado} • CI: ${estudiante.ci}</p>
+                        </div>
+                    </div>
+                </div>
+                <span class="bg-blue-100 text-blue-800 px-2 py-1 rounded-full text-xs font-semibold whitespace-nowrap ml-2">
+                    ${estudiante.total_prestamos}
+                </span>
+            </div>
+        `).join('');
+    }
+
+    function crearGraficoActividad() {
+        const ctx = document.getElementById('graficoActividad').getContext('2d');
+
+        if (graficoActividad) {
+            graficoActividad.destroy();
+        }
+
+        const datos = datosMetricas.prestamosPorDia || [];
+        const fechas = datos.map(item => {
+            const fecha = new Date(item.fecha);
+            return fecha.toLocaleDateString('es-ES', { day: 'numeric', month: 'short' });
+        });
+        const cantidades = datos.map(item => item.cantidad);
+
+        graficoActividad = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: fechas,
+                datasets: [{
+                    label: 'Préstamos por día',
+                    data: cantidades,
+                    backgroundColor: 'rgba(220, 38, 38, 0.2)',
+                    borderColor: 'rgb(220, 38, 38)',
+                    borderWidth: 2
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            stepSize: 1
+                        }
+                    }
+                }
+            }
+        });
+    }
+
+    function crearGraficoGrados() {
+        const ctx = document.getElementById('chartGrados').getContext('2d');
+
+        if (graficoGrados) {
+            graficoGrados.destroy();
+        }
+
+        const datos = datosMetricas.prestamosPorGrado || [];
+        const grados = datos.map(item => item.grado);
+        const cantidades = datos.map(item => item.total_prestamos);
+
+        graficoGrados = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: grados,
+                datasets: [{
+                    data: cantidades,
+                    backgroundColor: [
+                        'rgb(220, 38, 38)',
+                        'rgb(234, 88, 12)',
+                        'rgb(202, 138, 4)',
+                        'rgb(101, 163, 13)',
+                        'rgb(2, 132, 199)',
+                        'rgb(124, 58, 237)',
+                        'rgb(192, 38, 211)'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        position: 'bottom'
+                    }
+                }
+            }
+        });
+    }
+
+    function renderizarResultados() {
+        const tbody = document.getElementById('tabla-resultados');
+        const inicio = (paginaActual - 1) * registrosPorPagina;
+        const fin = inicio + registrosPorPagina;
+        const datosPagina = datosReporte.slice(inicio, fin);
+
+        if (datosReporte.length === 0) {
+            tbody.innerHTML = `
+                <tr>
+                    <td colspan="8" class="px-4 py-8 text-center text-gray-500">
+                        No se encontraron resultados con los filtros aplicados.
+                    </td>
+                </tr>
+            `;
+        } else {
+            tbody.innerHTML = datosPagina.map(prestamo => `
+                <tr class="border-b hover:bg-gray-50">
+                    <td class="px-4 py-3 text-sm text-gray-900">${prestamo.nombre}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600">${prestamo.ci}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600">${prestamo.grado}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600">${prestamo.codigo}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600">${new Date(prestamo.fecha_prestamo).toLocaleString()}</td>
+                    <td class="px-4 py-3 text-sm text-gray-600">${prestamo.fecha_devolucion ? new Date(prestamo.fecha_devolucion).toLocaleString() : '-'
+                }</td>
+                    <td class="px-4 py-3">
+                        <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full ${prestamo.fecha_devolucion ? 'bg-green-100 text-green-800' : 'bg-yellow-100 text-yellow-800'
+                }">
+                            ${prestamo.fecha_devolucion ? 'Devuelto' : 'Pendiente'}
+                        </span>
+                    </td>
+                    <td class="px-4 py-3 text-sm text-gray-600 max-w-xs truncate">${prestamo.observaciones || '-'}</td>
+                </tr>
+            `).join('');
+        }
+
+        actualizarPaginacion();
+        actualizarContadores();
+    }
+
+    function actualizarPaginacion() {
+        const totalPaginas = Math.ceil(datosReporte.length / registrosPorPagina);
+        const contenedor = document.getElementById('paginacion');
+
+        if (totalPaginas <= 1) {
+            contenedor.innerHTML = '';
+            return;
+        }
+
+        let html = '';
+
+        if (paginaActual > 1) {
+            html += `<button onclick="cambiarPagina(${paginaActual - 1})" class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">Anterior</button>`;
+        }
+
+        for (let i = 1; i <= totalPaginas; i++) {
+            if (i === paginaActual) {
+                html += `<span class="px-3 py-1 bg-red-600 text-white rounded-md text-sm">${i}</span>`;
+            } else {
+                html += `<button onclick="cambiarPagina(${i})" class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">${i}</button>`;
+            }
+        }
+
+        if (paginaActual < totalPaginas) {
+            html += `<button onclick="cambiarPagina(${paginaActual + 1})" class="px-3 py-1 border border-gray-300 rounded-md text-sm hover:bg-gray-50">Siguiente</button>`;
+        }
+
+        contenedor.innerHTML = html;
+    }
+
+    function actualizarContadores() {
+        const inicio = (paginaActual - 1) * registrosPorPagina + 1;
+        const fin = Math.min(paginaActual * registrosPorPagina, datosReporte.length);
+        const total = datosReporte.length;
+
+        document.getElementById('contador-resultados').textContent = `Mostrando ${total} registros`;
+        document.getElementById('info-paginacion').textContent = `Mostrando ${inicio}-${fin} de ${total} registros`;
+    }
+
+    function actualizarInfoFechas(fechaInicio, fechaFin) {
+        const info = document.getElementById('info-fechas');
+
+        if (fechaInicio && fechaFin) {
+            const inicio = new Date(fechaInicio).toLocaleDateString();
+            const fin = new Date(fechaFin).toLocaleDateString();
+            info.textContent = `Período: ${inicio} - ${fin}`;
+        } else {
+            info.textContent = '';
+        }
+    }
+
+    function cambiarPagina(pagina) {
+        paginaActual = pagina;
+        renderizarResultados();
+        window.scrollTo({ top: document.getElementById('tabla-resultados').offsetTop - 100, behavior: 'smooth' });
+    }
+
+    function limpiarFiltros() {
+        document.getElementById('form-filtros').reset();
+        establecerFechasPorDefecto();
+        datosReporte = [];
+        renderizarResultados();
+        document.getElementById('seccion-metricas').classList.add('hidden');
+        document.getElementById('contador-resultados').textContent = 'Aplicar filtros para ver resultados';
+        document.getElementById('info-fechas').textContent = '';
+    }
+
+    async function exportarDatos() {
+        const filtros = obtenerFiltros();
+        filtros.formato = 'csv';
+
+        try {
+            const response = await fetch(`/api/reportes/exportar?${new URLSearchParams(filtros)}`);
+
+            if (response.ok) {
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `reporte_prestamos_${new Date().toISOString().split('T')[0]}.csv`;
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+            } else {
+                mostrarMensaje('error', 'Error al exportar los datos');
+            }
+        } catch (error) {
+            console.error('Error:', error);
+            mostrarMensaje('error', 'Error de conexión');
+        }
+    }
+
+    function mostrarLoading() {
+        const tbody = document.getElementById('tabla-resultados');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" class="px-4 py-8 text-center text-gray-500">
+                    <div class="flex justify-center">
+                        <div class="animate-spin rounded-full h-8 w-8 border-b-2 border-red-600"></div>
+                    </div>
+                    <p class="mt-2">Generando reporte...</p>
+                </td>
+            </tr>
+        `;
+    }
+
+    function mostrarError(mensaje) {
+        const tbody = document.getElementById('tabla-resultados');
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="8" class="px-4 py-8 text-center text-red-500">
+                    <svg class="w-12 h-12 mx-auto text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.35 16.5c-.77.833.192 2.5 1.732 2.5z"/>
+                    </svg>
+                    <p class="mt-2 font-medium">${mensaje}</p>
+                </td>
+            </tr>
+        `;
+    }
+
+    function mostrarMensaje(tipo, texto) {
+        const notification = document.createElement('div');
+        notification.className = `fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 ${tipo === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
+        notification.textContent = texto;
+
+        document.body.appendChild(notification);
+
+        setTimeout(() => {
+            notification.remove();
+        }, 5000);
+    }
+</script>

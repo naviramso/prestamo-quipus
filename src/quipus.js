@@ -1,11 +1,8 @@
 const db = require("./database");
-// ===== CRUD DE QUIPUS =====
 
 // Registrar nuevo quipus
-//router.post("/api/quipus/registrar", requireAuth,
 const registrar = (req, res) => {
     const { codigo } = req.body;
-
     if (!codigo) {
         return res.status(400).json({ error: "El código es requerido" });
     }
@@ -48,20 +45,17 @@ const registrar = (req, res) => {
 };
 
 // Obtener todos los quipus
-// router.get("/api/quipus", requireAuth,
 const obtenerTodos = (req, res) => {
     db.all("SELECT * FROM quipus ORDER BY fecha_registro DESC", (err, rows) => {
         if (err) {
             console.error("Error al obtener quipus:", err);
             return res.status(500).json({ error: "Error del servidor" });
         }
-        console.log(rows);
         res.json(rows);
     });
 };
 
 // Obtener quipus por código
-// router.get("/api/quipus/:codigo", requireAuth,
 const obtenerPorCodigo = (req, res) => {
     const { codigo } = req.params;
 
@@ -80,7 +74,6 @@ const obtenerPorCodigo = (req, res) => {
 };
 
 // Actualizar estado de quipus
-// router.put("/api/quipus/:codigo/estado", requireAuth,
 const actualizarEstado = (req, res) => {
     const { codigo } = req.params;
     const { estado } = req.body;
@@ -120,7 +113,6 @@ const actualizarEstado = (req, res) => {
 };
 
 // Eliminar quipus
-// router.delete("/api/quipus/:codigo", requireAuth,
 const eliminar = (req, res) => {
     const { codigo } = req.params;
 
