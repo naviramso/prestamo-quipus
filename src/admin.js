@@ -2,12 +2,7 @@
 const db = require("./database");
 // Obtener todos los administradores
 const obtenerAdministradores = (req, res) => {
-    // Solo administradores pueden ver la lista completa
-    if (req.session.admin.rol !== "administrador") {
-        return res
-            .status(403)
-            .json({ error: "No tienes permisos para esta acción" });
-    }
+    // Solo administradores pueden ver la lista complet
 
     db.all(
         "SELECT id, nombre, username, rol, fecha_creacion FROM administradores ORDER BY fecha_creacion DESC",
@@ -137,27 +132,6 @@ const actualizarAdministrador = (req, res) => {
         return res.status(403).json({ error: "No puedes cambiar tu rol" });
     }
 
-    let sql = "UPDATE administradores SET nombre = ?, username = ?";
-    const params = [nombre, username];
-
-    if (rol && req.session.admin.rol === "administrador") {
-        sql += ", rol = ?";
-        params.push(rol);
-    }
-
-    if (contrasenia) {
-        if (contrasenia.length < 6) {
-            return res.status(400).json({
-                error: "La contraseña debe tener al menos 6 caracteres",
-            });
-        }
-        sql += ", contrasenia = ?";
-        params.push(contrasenia);
-    }
-
-    sql += " WHERE id = ?";
-    params.push(id);
-
     // Verificar si el username ya existe (excluyendo el actual)
     db.get(
         "SELECT id FROM administradores WHERE username = ? AND id != ?",
@@ -174,25 +148,87 @@ const actualizarAdministrador = (req, res) => {
                     .json({ error: "El nombre de usuario ya existe" });
             }
 
-            db.run(sql, params, function (err) {
-                if (err) {
-                    console.error("Error al actualizar administrador:", err);
-                    return res.status(500).json({
-                        error: "Error al actualizar el administrador",
+            // Si se está intentando cambiar el rol a "ver", verificar que no sea el último administrador
+            if (
+                rol &&
+                req.session.admin.rol === "administrador" &&
+                rol === "ver"
+            ) {
+                db.get(
+                    "SELECT COUNT(*) as count FROM administradores WHERE rol = 'administrador' AND id != ?",
+                    [id],
+                    (err, row) => {
+                        if (err) {
+                            console.error(
+                                "Error al contar administradores:",
+                                err
+                            );
+                            return res
+                                .status(500)
+                                .json({ error: "Error del servidor" });
+                        }
+
+                        // Si no hay otros administradores, no permitir el cambio
+                        if (row.count === 0) {
+                            return res.status(400).json({
+                                error: "No puedes cambiar el rol a 'ver' porque es el último administrador",
+                            });
+                        }
+
+                        // Continuar con la actualización
+                        procederConActualizacion();
+                    }
+                );
+            } else {
+                // Si no se está cambiando el rol a "ver", continuar directamente
+                procederConActualizacion();
+            }
+
+            function procederConActualizacion() {
+                let sql = "UPDATE administradores SET nombre = ?, username = ?";
+                const params = [nombre, username];
+
+                if (rol && req.session.admin.rol === "administrador") {
+                    sql += ", rol = ?";
+                    params.push(rol);
+                }
+
+                if (contrasenia) {
+                    if (contrasenia.length < 6) {
+                        return res.status(400).json({
+                            error: "La contraseña debe tener al menos 6 caracteres",
+                        });
+                    }
+                    sql += ", contrasenia = ?";
+                    params.push(contrasenia);
+                }
+
+                sql += " WHERE id = ?";
+                params.push(id);
+
+                db.run(sql, params, function (err) {
+                    if (err) {
+                        console.error(
+                            "Error al actualizar administrador:",
+                            err
+                        );
+                        return res.status(500).json({
+                            error: "Error al actualizar el administrador",
+                        });
+                    }
+
+                    if (this.changes === 0) {
+                        return res
+                            .status(404)
+                            .json({ error: "Administrador no encontrado" });
+                    }
+
+                    res.json({
+                        success: true,
+                        mensaje: "Administrador actualizado exitosamente",
                     });
-                }
-
-                if (this.changes === 0) {
-                    return res
-                        .status(404)
-                        .json({ error: "Administrador no encontrado" });
-                }
-
-                res.json({
-                    success: true,
-                    mensaje: "Administrador actualizado exitosamente",
                 });
-            });
+            }
         }
     );
 };

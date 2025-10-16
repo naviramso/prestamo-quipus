@@ -24,6 +24,7 @@ const {
     promocionarGrados,
     obtenerPrestamosPorEstudiante,
     obtenerHistorialPorEstudiante,
+    obtenerEstudiantesConPrestamosActivos,
 } = require("./estudiantes");
 
 const {
@@ -158,9 +159,11 @@ router.delete("/api/quipus/:codigo", requireAuth, eliminar);
 
 //API ESTUDIANTES
 router.post("/api/estudiantes/registrar", requireAuth, registrarEstudiante);
+
 router.get("/api/estudiantes/buscar", requireAuth, buscarEstudiantes);
 
 router.get("/api/estudiantes", requireAuth, obtenerTodosEstudiantes);
+
 router.get("/api/estudiantes/:id", requireAuth, obtenerPorEstudianteID);
 router.put("/api/estudiantes/:id", requireAuth, actualizarEstudiante);
 router.delete("/api/estudiantes/:id", requireAuth, eliminarEstudiante);
@@ -175,6 +178,11 @@ router.get(
     "/api/estudiantes/:ci/historial",
     requireAuth,
     obtenerHistorialPorEstudiante
+);
+router.get(
+    "/api/cantidad-prestamos",
+    requireAuth,
+    obtenerEstudiantesConPrestamosActivos
 );
 
 // API PRESTAMOS

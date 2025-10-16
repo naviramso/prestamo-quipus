@@ -6,14 +6,16 @@
                 <h1 class="text-2xl font-bold text-gray-800">Gestión de Administradores</h1>
                 <p class="text-gray-600">Administra los usuarios del sistema</p>
             </div>
-            <% if (admin.rol === 'administrador') { %>
-                <a href="/admin/administradores/registrar" class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-medium transition-colors flex items-center">
+            <% if (admin.rol==='administrador' ) { %>
+                <a href="/admin/administradores/registrar"
+                    class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md font-medium transition-colors flex items-center">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
                     </svg>
                     Nuevo Administrador
                 </a>
-            <% } %>
+                <% } %>
         </div>
     </div>
 
@@ -23,7 +25,8 @@
             <div class="flex items-center">
                 <div class="p-2 bg-blue-100 rounded-lg">
                     <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
                     </svg>
                 </div>
                 <div class="ml-3">
@@ -37,7 +40,8 @@
             <div class="flex items-center">
                 <div class="p-2 bg-green-100 rounded-lg">
                     <svg class="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                     </svg>
                 </div>
                 <div class="ml-3">
@@ -51,8 +55,10 @@
             <div class="flex items-center">
                 <div class="p-2 bg-purple-100 rounded-lg">
                     <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
                     </svg>
                 </div>
                 <div class="ml-3">
@@ -71,12 +77,11 @@
                     <h2 class="text-lg font-semibold text-gray-800">Lista de Administradores</h2>
                     <p class="text-gray-600 text-sm" id="contadorResultados">Cargando usuarios...</p>
                 </div>
-                <button 
-                    onclick="cargarAdministradores()"
-                    class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center"
-                >
+                <button onclick="cargarAdministradores()"
+                    class="bg-gray-600 hover:bg-gray-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors flex items-center">
                     <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                            d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                     </svg>
                     Actualizar
                 </button>
@@ -116,71 +121,52 @@
     <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
         <div class="mt-3">
             <h3 class="text-lg font-medium text-gray-800 mb-4">Editar Administrador</h3>
-            
+
             <form id="form-editar" class="space-y-4">
                 <input type="hidden" id="editarId">
-                
+
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Nombre</label>
-                    <input 
-                        type="text" 
-                        id="editarNombre" 
-                        required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    >
+                    <input type="text" id="editarNombre" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
                 </div>
 
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Usuario</label>
-                    <input 
-                        type="text" 
-                        id="editarUsername" 
-                        required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    >
+                    <input type="text" id="editarUsername" required
+                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
                 </div>
 
-                <% if (admin.rol === 'administrador') { %>
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Rol</label>
-                    <select 
-                        id="editarRol" 
-                        required
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    >
-                        <option value="administrador">Administrador</option>
-                        <option value="ver">Ver</option>
-                    </select>
-                </div>
-                <% } %>
+                <% if (admin.rol==='administrador' ) { %>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Rol</label>
+                        <select id="editarRol" required
+                            class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                            <option value="administrador">Administrador</option>
+                            <option value="ver">Ver</option>
+                        </select>
+                    </div>
+                    <% } %>
 
-                <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Nueva Contraseña (opcional)</label>
-                    <input 
-                        type="password" 
-                        id="editarContrasenia" 
-                        placeholder="Dejar vacío para no cambiar"
-                        minlength="6"
-                        class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent"
-                    >
-                    <p class="text-xs text-gray-500 mt-1">Mínimo 6 caracteres</p>
-                </div>
+                        <div>
+                            <label class="block text-sm font-medium text-gray-700 mb-1">Nueva Contraseña
+                                (opcional)</label>
+                            <input type="password" id="editarContrasenia" placeholder="Dejar vacío para no cambiar"
+                                minlength="6"
+                                class="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-red-500 focus:border-transparent">
+                            <p class="text-xs text-gray-500 mt-1">Mínimo 6 caracteres</p>
+                        </div>
 
-                <div class="flex justify-end space-x-3 pt-2">
-                    <button 
-                        type="button"
-                        onclick="cerrarModalEditar()"
-                        class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                    >
-                        Cancelar
-                    </button>
-                    <button 
-                        type="submit"
-                        class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors"
-                    >
-                        Guardar Cambios
-                    </button>
-                </div>
+                        <div class="flex justify-end space-x-3 pt-2">
+                            <button type="button" onclick="cerrarModalEditar()"
+                                class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                Cancelar
+                            </button>
+                            <button type="submit"
+                                class="bg-red-600 hover:bg-red-700 text-white px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                Guardar Cambios
+                            </button>
+                        </div>
             </form>
         </div>
     </div>
@@ -191,16 +177,16 @@
     let usuarioActualId = <%- JSON.stringify(admin.id) %>;
 
     // Cargar administradores al iniciar
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         cargarAdministradores();
     });
 
     async function cargarAdministradores() {
         try {
             mostrarLoading();
-            
+
             const response = await fetch('/api/administradores');
-            
+
             if (response.status === 403) {
                 mostrarError('No tienes permisos para ver la lista de administradores.');
                 return;
@@ -232,7 +218,8 @@
 
     function renderizarAdministradores() {
         const tbody = document.getElementById('tabla-administradores');
-        
+        const rolUsuarioActual = <%- JSON.stringify(admin.rol) %>;
+
         if (administradores.length === 0) {
             tbody.innerHTML = `
                 <tr>
@@ -267,14 +254,14 @@
                             <button 
                                 onclick="abrirModalEditar(${admin.id})"
                                 class="text-blue-600 hover:text-blue-800 text-sm font-medium"
-                                ${admin.rol !== 'administrador' && admin.id != usuarioActualId ? 'style="display: none;"' : ''}
+                               ${(rolUsuarioActual === 'administrador' || (rolUsuarioActual === 'ver' && admin.id == usuarioActualId)) ? '' : 'style="display: none;"'}
                             >
                                 Editar
                             </button>
                             <button 
                                 onclick="eliminarAdministrador(${admin.id}, '${admin.nombre}')"
                                 class="text-red-600 hover:text-red-800 text-sm font-medium"
-                                ${admin.rol !== 'administrador' || admin.id == usuarioActualId ? 'style="display: none;"' : ''}
+                                ${rolUsuarioActual !== 'administrador' ? 'style="display: none;"' : ''}
                             >
                                 Eliminar
                             </button>
@@ -292,7 +279,7 @@
             'administrador': 'bg-green-100 text-green-800',
             'ver': 'bg-blue-100 text-blue-800'
         };
-        
+
         const textos = {
             'administrador': 'Administrador',
             'ver': 'Ver'
@@ -304,7 +291,7 @@
     async function abrirModalEditar(id) {
         try {
             const response = await fetch(`/api/administradores/${id}`);
-            
+
             if (response.status === 403) {
                 mostrarMensaje('error', 'No tienes permisos para editar este usuario.');
                 return;
@@ -318,10 +305,10 @@
                 document.getElementById('editarUsername').value = admin.username;
                 
                 <% if (admin.rol === 'administrador') { %>
-                document.getElementById('editarRol').value = admin.rol;
+                    document.getElementById('editarRol').value = admin.rol;
                 <% } %>
-                
-                document.getElementById('modalEditar').classList.remove('hidden');
+
+                    document.getElementById('modalEditar').classList.remove('hidden');
             }
         } catch (error) {
             console.error('Error:', error);
@@ -334,9 +321,9 @@
         document.getElementById('form-editar').reset();
     }
 
-    document.getElementById('form-editar').addEventListener('submit', async function(e) {
+    document.getElementById('form-editar').addEventListener('submit', async function (e) {
         e.preventDefault();
-        
+
         const id = document.getElementById('editarId').value;
         const nombre = document.getElementById('editarNombre').value.trim();
         const username = document.getElementById('editarUsername').value.trim();
@@ -353,7 +340,7 @@
         };
 
         <% if (admin.rol === 'administrador') { %>
-        datos.rol = rol;
+            datos.rol = rol;
         <% } %>
 
         if (contrasenia) {
@@ -379,7 +366,7 @@
                 mostrarMensaje('success', data.mensaje);
                 cerrarModalEditar();
                 cargarAdministradores();
-                
+
                 // Si el usuario editó su propia información, recargar la página
                 if (id == usuarioActualId) {
                     setTimeout(() => {
@@ -455,13 +442,12 @@
 
     function mostrarMensaje(tipo, texto) {
         const notification = document.createElement('div');
-        notification.className = `fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 ${
-            tipo === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
-        }`;
+        notification.className = `fixed top-4 right-4 p-4 rounded-md shadow-lg z-50 ${tipo === 'success' ? 'bg-green-500 text-white' : 'bg-red-500 text-white'
+            }`;
         notification.textContent = texto;
-        
+
         document.body.appendChild(notification);
-        
+
         setTimeout(() => {
             notification.remove();
         }, 5000);

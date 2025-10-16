@@ -365,6 +365,7 @@
 
         // Calcular promedio diario
         const dias = calcularDiasPeriodo();
+        console.log("promedio", datosMetricas.totalPrestamos);
         const promedio = dias > 0 ? Math.round(datosMetricas.totalPrestamos / dias) : 0;
         document.getElementById('metric-promedio').textContent = promedio;
 
@@ -381,9 +382,12 @@
         const inicio = document.getElementById('fechaInicio').value;
         const fin = document.getElementById('fechaFin').value;
 
+        console.log(inicio, fin);
+
         if (!inicio || !fin) return 0;
 
         const diffTime = Math.abs(new Date(fin) - new Date(inicio));
+        console.log(diffTime, "... ", diffTime / (1000 * 60 * 60 * 24) + 1);
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
     }
 

@@ -1,7 +1,8 @@
 <!-- Sidebar Administrativo -->
 <div class="flex h-screen bg-gray-100">
     <!-- Sidebar -->
-    <div class="w-full sm:w-64 bg-red-700 text-white shadow-lg absolute sm:relative z-50 hidden sm:block h-screen" id="sidebar">
+    <div class="w-full sm:w-64 bg-red-700 text-white shadow-lg absolute sm:relative z-50 hidden sm:block h-screen"
+        id="sidebar">
         <!-- Header del Sidebar -->
         <div class="p-4 border-b border-red-600 flex justify-between">
             <div class="flex items-center gap-3">
@@ -123,35 +124,37 @@
                     </a>
 
                     <!-- Administradores -->
-                    <% if (admin.rol==='administrador' ) { %>
-                        <div class="menu-group">
-                            <button onclick="toggleSubmenu('admin-menu')"
-                                class="w-full flex items-center justify-between p-3 hover:bg-red-600 rounded-lg transition-colors">
-                                <div class="flex items-center gap-3">
-                                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                                    </svg>
-                                    <span>Administradores</span>
-                                </div>
-                                <svg id="admin-arrow" class="w-4 h-4 transform transition-transform" fill="none"
-                                    stroke="currentColor" viewBox="0 0 24 24">
+
+                    <div class="menu-group">
+                        <button onclick="toggleSubmenu('admin-menu')"
+                            class="w-full flex items-center justify-between p-3 hover:bg-red-600 rounded-lg transition-colors">
+                            <div class="flex items-center gap-3">
+                                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7" />
+                                        d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
                                 </svg>
-                            </button>
-                            <div id="admin-menu" class="hidden ml-8 space-y-1 mt-1">
+                                <span>Administradores</span>
+                            </div>
+                            <svg id="admin-arrow" class="w-4 h-4 transform transition-transform" fill="none"
+                                stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7" />
+                            </svg>
+                        </button>
+                        <div id="admin-menu" class="hidden ml-8 space-y-1 mt-1">
+                            <% if (admin.rol==='administrador' ) { %>
                                 <a href="/admin/administradores/registrar"
                                     class="nav-link block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
                                     Registrar Admin
                                 </a>
-                                <a href="/admin/administradores/lista"
-                                    class="nav-link block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
-                                    Lista de Admins
-                                </a>
-                            </div>
+                                <% } %>
+                                    <a href="/admin/administradores/lista"
+                                        class="nav-link block py-2 px-4 hover:bg-red-600 rounded text-sm transition-colors">
+                                        Lista de Admins
+                                    </a>
                         </div>
-                        <% } %>
+                    </div>
+
         </nav>
 
         <!-- Footer del Sidebar -->
@@ -274,15 +277,15 @@
     // Cerrar sidebar al hacer clic en enlaces (solo en móviles)
     document.addEventListener('DOMContentLoaded', function () {
         const currentPath = window.location.pathname;
-        
+
         // Marcar página activa
         document.querySelectorAll('nav a').forEach(link => {
             if (link.getAttribute('href') === currentPath) {
                 link.classList.add('bg-red-600');
             }
-            
+
             // Agregar event listener para cerrar sidebar en móviles
-            link.addEventListener('click', function() {
+            link.addEventListener('click', function () {
                 if (window.innerWidth < 640) {
                     closeMobileSidebar();
                 }

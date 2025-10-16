@@ -94,9 +94,9 @@ const registrarPrestamo = (req, res) => {
                                             });
                                         }
 
-                                        if (row.count >= 2) {
+                                        if (row.count >= 1) {
                                             return res.status(400).json({
-                                                error: "El estudiante ya tiene el máximo de 2 préstamos activos",
+                                                error: "El estudiante ya tiene el máximo de 1 préstamos activos",
                                             });
                                         }
 

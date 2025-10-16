@@ -80,7 +80,7 @@ const registrarEstudiante = (req, res) => {
 const obtenerTodosEstudiantes = (req, res) => {
     const { estado, grado, paralelo, search } = req.query;
 
-    let sql = `SELECT * FROM estudiantes`;
+    let sql = `SELECT * FROM estudiantes `;
     let params = [];
     let conditions = [];
 
@@ -226,6 +226,24 @@ const actualizarEstudiante = (req, res) => {
     );
 };
 
+const obtenerEstudiantesConPrestamosActivos = (req, res) => {
+    const sql = `select COUNT(*) as cantidad from prestamos p 
+                 join estudiantes e on p.ci = e.ci 
+                 where p.fecha_devolucion is null
+                 GROUP BY p.ci HAVING COUNT(*) > 0`;
+
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            console.error(
+                "Error al obtener estudiantes con préstamos activos:",
+                err
+            );
+            return res.status(500).json({ error: "Error del servidor" });
+        }
+        console.log(rows);
+        res.json(rows);
+    });
+};
 // Eliminar estudiante
 // router.delete("/api/estudiantes/:id", requireAuth,
 const eliminarEstudiante = (req, res) => {
@@ -294,7 +312,7 @@ const obtenerConfigGrados = (req, res) => {
 const promocionarGrados = (req, res) => {
     // Los de 4to pasan a 5to
     db.run(
-        "UPDATE estudiantes SET grado = '5' WHERE grado = '4' AND estado = 'activo'",
+        "UPDATE estudiantes SET estado = 'inactivo' WHERE grado = '6' AND estado = 'activo'",
         (err) => {
             if (err) {
                 console.error("Error al promocionar 4to grado:", err);
@@ -314,7 +332,7 @@ const promocionarGrados = (req, res) => {
 
                     // Los de 6to se desactivan
                     db.run(
-                        "UPDATE estudiantes SET estado = 'inactivo' WHERE grado = '6' AND estado = 'activo'",
+                        "UPDATE estudiantes SET grado = '5' WHERE grado = '4' AND estado = 'activo'",
                         (err) => {
                             if (err) {
                                 console.error(
@@ -386,10 +404,10 @@ const obtenerPrestamosPorEstudiante = (req, res) => {
     );
 };
 
-// router.get("/api/estudiantes/:ci/historial", requireAuth, 
-    const obtenerHistorialPorEstudiante = (req, res) => {
+// router.get("/api/estudiantes/:ci/historial", requireAuth,
+const obtenerHistorialPorEstudiante = (req, res) => {
     const { ci } = req.params;
-    console.log(ci)
+    console.log(ci);
     const sql = `
         SELECT 
             p.*,
@@ -471,4 +489,5 @@ module.exports = {
     promocionarGrados,
     obtenerPrestamosPorEstudiante,
     obtenerHistorialPorEstudiante,
+    obtenerEstudiantesConPrestamosActivos,
 };

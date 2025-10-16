@@ -343,7 +343,7 @@
             todosLosEstudiantes = await response.json();
 
             if (response.ok) {
-                actualizarEstadisticas(todosLosEstudiantes);
+                await actualizarEstadisticas(todosLosEstudiantes);
                 filtrarEstudiantes();
             } else {
                 mostrarError('Error al cargar los estudiantes');
@@ -354,18 +354,18 @@
         }
     }
 
-    function actualizarEstadisticas(estudiantes) {
+    async function  actualizarEstadisticas(estudiantes) {
         const total = estudiantes.length;
         const activos = estudiantes.filter(e => e.estado === 'activo').length;
         const inactivos = estudiantes.filter(e => e.estado === 'inactivo').length;
 
-        // Contar estudiantes con préstamos activos (esto requeriría una consulta adicional)
-        const conPrestamos = 0; // Por implementar
+        const response = await fetch('/api/cantidad-prestamos');
+        const conPrestamos = await response.json();
 
         document.getElementById('totalEstudiantes').textContent = total;
         document.getElementById('activos').textContent = activos;
         document.getElementById('inactivos').textContent = inactivos;
-        document.getElementById('conPrestamos').textContent = conPrestamos;
+        document.getElementById('conPrestamos').textContent = conPrestamos.length;
     }
 
     function filtrarEstudiantes() {
