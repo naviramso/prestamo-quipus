@@ -6,9 +6,9 @@
         <!-- Header del Sidebar -->
         <div class="p-4 border-b border-red-600 flex justify-between">
             <div class="flex items-center gap-3">
-                <img src="/logo.png" alt="Logo" class="w-10 h-10 rounded">
+                <img src="/logo.png" alt="Logo" class="w-14 h-14 rounded">
                 <div>
-                    <h2 class="font-bold text-lg">Panel Admin</h2>
+                    <h2 class="font-bold text-lg">Prestamos Quipus</h2>
                     <p class="text-red-200 text-sm" id="adminRole">
                         <%= admin.rol %>
                     </p>
@@ -187,8 +187,11 @@
 
     <!-- Contenido Principal -->
     <div class="flex-1 overflow-auto">
+        <div class="absolute inset-0 bg-black bg-opacity-0 z-0"></div>
+        <!-- Imagen de fondo -->
+        <div class="absolute inset-0 z-0 bg-repeat bg-center opacity-20 bg-[length:200px_200px]" style="background-image: url('/logo.png');"></div>
         <!-- Header del contenido -->
-        <header class="bg-white shadow-sm border-b">
+        <header class="bg-white bg-opacity-90 shadow-sm border-b relative z-10">
             <div class="px-6 py-4">
                 <div class="flex justify-between items-center">
                     <button id="mobile-sidebar-toggle-2" class="text-gray-600 sm:hidden">
@@ -211,7 +214,7 @@
         </header>
 
         <!-- Área de contenido dinámico -->
-        <main class="p-6">
+        <main class="p-6 relative z-10">
             <%- body %>
         </main>
     </div>
