@@ -4,7 +4,6 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "install": "node src/migraciones.js",
         "dev": "node --watch server.js",
         "start": "node server.js",
         "test": "jest"
