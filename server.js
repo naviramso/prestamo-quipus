@@ -8,7 +8,7 @@ const expressLayouts = require("express-ejs-layouts");
 const session = require("express-session");
 
 const app = express();
-const PORT = 3002;
+const PORT = 3000;
 
 // Middleware
 app.set("view engine", "ejs");
