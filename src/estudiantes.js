@@ -14,7 +14,6 @@ const registrarEstudiante = (req, res) => {
     // Validar campos obligatorios
     if (
         !apellido_paterno ||
-        !apellido_materno ||
         !nombres ||
         !ci ||
         !grado ||
@@ -240,7 +239,6 @@ const obtenerEstudiantesConPrestamosActivos = (req, res) => {
             );
             return res.status(500).json({ error: "Error del servidor" });
         }
-        console.log(rows);
         res.json(rows);
     });
 };
@@ -407,7 +405,6 @@ const obtenerPrestamosPorEstudiante = (req, res) => {
 // router.get("/api/estudiantes/:ci/historial", requireAuth,
 const obtenerHistorialPorEstudiante = (req, res) => {
     const { ci } = req.params;
-    console.log(ci);
     const sql = `
         SELECT 
             p.*,

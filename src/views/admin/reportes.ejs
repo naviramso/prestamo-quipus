@@ -1,6 +1,6 @@
 <div class="space-y-6">
     <!-- Header -->
-    <div class="bg-white rounded-lg shadow-sm border p-6">
+    <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
         <div class="flex justify-between items-center">
             <div>
                 <h1 class="text-2xl font-bold text-gray-800">Reportes Avanzados</h1>
@@ -20,7 +20,7 @@
     </div>
 
     <!-- Filtros Avanzados -->
-    <div class="bg-white rounded-lg shadow-sm border p-6">
+    <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
         <h2 class="text-lg font-semibold text-gray-800 mb-4">Filtros de Reporte</h2>
 
         <form id="form-filtros" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -90,7 +90,7 @@
     <div id="seccion-metricas" class="hidden">
         <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <!-- Total Préstamos -->
-            <div class="bg-white rounded-lg shadow-sm border p-6">
+            <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
                 <div class="flex items-center">
                     <div class="p-3 bg-blue-100 rounded-lg">
                         <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,7 +106,7 @@
             </div>
 
             <!-- Pendientes -->
-            <div class="bg-white rounded-lg shadow-sm border p-6">
+            <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
                 <div class="flex items-center">
                     <div class="p-3 bg-yellow-100 rounded-lg">
                         <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -122,7 +122,7 @@
             </div>
 
             <!-- Tasa de Devolución -->
-            <div class="bg-white rounded-lg shadow-sm border p-6">
+            <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
                 <div class="flex items-center">
                     <div class="p-3 bg-green-100 rounded-lg">
                         <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -138,7 +138,7 @@
             </div>
 
             <!-- Promedio Diario -->
-            <div class="bg-white rounded-lg shadow-sm border p-6">
+            <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
                 <div class="flex items-center">
                     <div class="p-3 bg-purple-100 rounded-lg">
                         <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -157,7 +157,7 @@
         <!-- Gráficos y Rankings -->
         <div class="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-6">
             <!-- Gráfico de Actividad -->
-            <div class="bg-white rounded-lg shadow-sm border p-6">
+            <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Actividad de Préstamos</h3>
                 <div class="h-64">
                     <canvas id="graficoActividad"></canvas>
@@ -165,7 +165,7 @@
             </div>
 
             <!-- Quipus Más Prestados -->
-            <div class="bg-white rounded-lg shadow-sm border p-6">
+            <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Quipus Más Prestados</h3>
                 <div id="ranking-quipus" class="space-y-3">
                     <div class="text-center text-gray-500 py-8">
@@ -175,7 +175,7 @@
             </div>
 
             <!-- Estudiantes Más Activos -->
-            <div class="bg-white rounded-lg shadow-sm border p-6">
+            <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Estudiantes Más Activos</h3>
                 <div id="ranking-estudiantes" class="space-y-3">
                     <div class="text-center text-gray-500 py-8">
@@ -185,7 +185,7 @@
             </div>
 
             <!-- Préstamos por Grado -->
-            <div class="bg-white rounded-lg shadow-sm border p-6">
+            <div class="bg-white opacity-80 rounded-lg shadow-sm border p-6">
                 <h3 class="text-lg font-semibold text-gray-800 mb-4">Préstamos por Grado</h3>
                 <div id="grafico-grados" class="h-64">
                     <canvas id="chartGrados"></canvas>
@@ -195,7 +195,7 @@
     </div>
 
     <!-- Tabla de Resultados -->
-    <div class="bg-white rounded-lg shadow-sm border">
+    <div class="bg-white opacity-80 rounded-lg shadow-sm border">
         <div class="p-6 border-b">
             <div class="flex justify-between items-center">
                 <div>
@@ -365,7 +365,6 @@
 
         // Calcular promedio diario
         const dias = calcularDiasPeriodo();
-        console.log("promedio", datosMetricas.totalPrestamos);
         const promedio = dias > 0 ? Math.round(datosMetricas.totalPrestamos / dias) : 0;
         document.getElementById('metric-promedio').textContent = promedio;
 
@@ -382,12 +381,9 @@
         const inicio = document.getElementById('fechaInicio').value;
         const fin = document.getElementById('fechaFin').value;
 
-        console.log(inicio, fin);
-
         if (!inicio || !fin) return 0;
 
         const diffTime = Math.abs(new Date(fin) - new Date(inicio));
-        console.log(diffTime, "... ", diffTime / (1000 * 60 * 60 * 24) + 1);
         return Math.ceil(diffTime / (1000 * 60 * 60 * 24)) + 1;
     }
 

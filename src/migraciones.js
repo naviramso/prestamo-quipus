@@ -168,7 +168,7 @@ VALUES (41031, 'disponible'),
         if (row.count === 0) {
             const gradosConfig = [
                 { grado: "4", paralelos: '["A","B","C"]' },
-                { grado: "5", paralelos: '["A","B","C", "D"]' },
+                { grado: "5", paralelos: '["A","B","C","D"]' },
                 { grado: "6", paralelos: '["A","B","C","D"]' },
             ];
 
