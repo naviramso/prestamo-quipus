@@ -25,7 +25,7 @@
                         Nuevo Estudiante
                     </a>
                 </div>
-             <% } %>
+                <% } %>
         </div>
     </div>
 
@@ -354,7 +354,7 @@
         }
     }
 
-    async function  actualizarEstadisticas(estudiantes) {
+    async function actualizarEstadisticas(estudiantes) {
         const total = estudiantes.length;
         const activos = estudiantes.filter(e => e.estado === 'activo').length;
         const inactivos = estudiantes.filter(e => e.estado === 'inactivo').length;
@@ -678,4 +678,11 @@
         document.getElementById('contadorResultados').textContent = `Mostrando ${total} estudiantes`;
         document.getElementById('infoPaginacion').textContent = `Mostrando ${inicio}-${fin} de ${total} estudiantes`;
     }
+
+    function cambiarPagina(pagina) {
+        paginaActual = pagina;
+        renderizarEstudiantes();
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
 </script>
